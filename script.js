@@ -397,6 +397,7 @@ function gerarCertificado() {
 }
 
 // ATUALIZA CRIAÇÃO E DOWNLOAD REAL DO CERTIFICADO VIA BLOB HTML
+// Substitua o bloco antigo por este:
 function executarDownloadRealCertificado() {
     const porcentagem = ((totalAcertosQuiz / 30) * 100).toFixed(0);
     const htmlConteudo = `
@@ -404,15 +405,60 @@ function executarDownloadRealCertificado() {
     <html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
-        <title>Certificado Oficial - Raízes do Amanhã</title>
         <style>
-            body { font-family: 'Arial', sans-serif; background: #f4f7f5; padding: 40px; text-align: center; }
-            .border-cert { border: 10px double #0f271c; padding: 40px; background: white; max-width: 800px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-            h1 { color: #0f271c; font-size: 32px; text-transform: uppercase; margin-bottom: 5px; }
-            h2 { color: #97cc52; font-size: 20px; margin-top: 0; margin-bottom: 40px; }
-            p { font-size: 18px; color: #333; line-height: 1.8; margin: 20px 0; text-align: justify; }
-            .destaque { font-weight: bold; color: #0f271c; }
-            .footer-cert { margin-top: 60px; font-size: 14px; color: #777; border-top: 1px dashed #ccc; padding-top: 20px; }
+            @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Plus+Jakarta+Sans:wght@400;700&display=swap');
+            body { margin: 0; padding: 20px; background: #f0f0f0; display: flex; justify-content: center; }
+            .cert-container { 
+                width: 900px; height: 630px; background: #f9f7f2; 
+                border: 20px solid #2d5a27; border-image: linear-gradient(135deg, #2d5a27, #b8860b) 30;
+                position: relative; padding: 40px; box-sizing: border-box; text-align: center;
+                box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            }
+            .faixa-ouro { 
+                background: linear-gradient(to bottom, #d4af37, #aa8730);
+                color: white; padding: 15px 40px; margin: 0 auto 30px;
+                display: inline-block; clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+                font-family: 'Cinzel', serif; font-size: 24px; text-transform: uppercase;
+            }
+            h1 { font-family: 'Cinzel', serif; color: #1a3c17; font-size: 32px; margin-bottom: 20px; }
+            p { font-family: 'Plus Jakarta Sans', sans-serif; color: #333; line-height: 1.6; font-size: 16px; margin: 15px 0; }
+            .assinaturas { display: flex; justify-content: space-between; margin-top: 80px; }
+            .assinatura-box { border-top: 1px solid #333; width: 250px; padding-top: 10px; font-family: 'Cinzel', serif; }
+        </style>
+    </head>
+    <body>
+        <div class="cert-container">
+            <div class="faixa-ouro">PROJETO RAÍZES DO AMANHÃ</div>
+            <div style="font-size: 14px; margin-bottom: 20px;">Concepto de Monitoramento de Imparaviento agroecológica</div>
+            
+            <h1>CERTIFICADO DE EXCELÊNCIA AGROECOLÓGICA</h1>
+            
+            <p>Pelo presente certificado, declaramos que o <strong>ALUNO(A) ONLINE</strong> concluiu com aproveitamento exemplar o ecossistema pedagógico digital de sustentabilidade, atingindo a marca avaliativa de <strong>${totalAcertosQuiz} acertos de 30 possíveis (${porcentagem}% de rendimento)</strong> nas lições teóricas e computacionais.</p>
+            
+            <p style="font-weight: bold; margin-top: 20px;">PLATAFORMA DE MONITORAMENTO DE IMPACTO AGROECOLÓGICO & INTELIGÊNCIA TECNOLÓGICA COMPUTACIONAL</p>
+            
+            <div class="assinaturas">
+                <div class="assinatura-box">
+                    Antônio Olinto<br><span style="font-size:12px;">Antônio Olinto, 14 de Junho de 2026</span>
+                </div>
+                <div class="assinatura-box">
+                    Daniel Muniz Niizer<br><span style="font-size:12px;">Daniel Muniz Niizer, 14 de Junho de 2026</span>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>`;
+
+    const blob = new Blob([htmlConteudo], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Certificado_Raizes_do_Amanhã.html';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
         </style>
     </head>
     <body>
