@@ -8,7 +8,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -31,7 +30,7 @@
         <button class="nav-btn" id="btn-tab-progresso">📈 Meu Progresso</button>
     </nav>
 
-    <div class="sidebar-alert-box" style="margin-top: auto;">
+    <div class="sidebar-alert-box mt-auto">
         <h4 class="alert-box-title">TECNOLOGIA RURAL</h4>
         <p class="alert-box-desc">Sustentabilidade Rústica e Computação Aplicada.</p>
         <div class="alert-box-avatars">
@@ -130,175 +129,80 @@
                     <div class="bar-meta"><span>Práticas de Cultivo</span><span id="pct-cultivo">0%</span></div>
                     <div class="bar-rail"><div id="bar-cultivo" class="bar-fill"></div></div>
                 </div>
-
                 <div class="bar-group">
                     <div class="bar-meta"><span>Conservação Ambiental</span><span id="pct-ambiental">0%</span></div>
                     <div class="bar-rail"><div id="bar-ambiental" class="bar-fill"></div></div>
                 </div>
-
                 <div class="bar-group">
                     <div class="bar-meta"><span>Gestão & Sociedade</span><span id="pct-gestao">0%</span></div>
                     <div class="bar-rail"><div id="bar-gestao" class="bar-fill"></div></div>
                 </div>
 
-                <div id="resultado-diagnostico-detalhe" class="output-alert hidden mt-15"></div>
+                <div id="resultado-diagnostico-detalhe" class="hidden mt-15"></div>
             </section>
         </div>
     </div>
 
     <div id="view-agroecologia" class="view-pane">
+        <section class="banner-hero">
+            <h1 class="banner-heading">Espaço de Capacitação Científica</h1>
+            <p class="banner-paragraph">Selecione um dos cartões abaixo para compreender as práticas sustentáveis recomendadas para a nossa região.</p>
+        </section>
         <section class="card-base">
-            <h2 class="card-title">🌱 Manual Técnico Interativo de Práticas Agroecológicas</h2>
-            <p class="card-subtitle">Navegue pelos cards e descubra soluções que ajudam a produzir mais, preservando o solo, a água e a biodiversidade:</p>
-
             <div class="agro-grid-complet">
                 <div class="agro-card-extended" data-modal="rotacao">
-                    <div class="agro-img-placeholder">🔄 Rotação de Culturas</div>
+                    <div class="agro-img-placeholder">🔄 Rotação</div>
                     <div class="agro-card-content">
-                        <h4>🔄 Rotação e Diversificação de Culturas</h4>
-                        <p>O plantio alternado de diferentes espécies quebra o ciclo de pragas e doenças.</p>
+                        <h4>🔄 Rotação de Culturas</h4>
+                        <p>Alternância ordenada de diferentes espécies vegetais.</p>
                         <span class="tech-tag">Manejo de Solo</span>
                     </div>
                 </div>
-
-                <div class="agro-card-extended" data-modal="adubacao">
+                <div class="agro-card-extended" data-modal="verde">
                     <div class="agro-img-placeholder">🌿 Adubação Verde</div>
                     <div class="agro-card-content">
-                        <h4>🌿 Adubação Verde e Cobertura Viva</h4>
-                        <p>Plantas de cobertura que protegem o solo contra chuvas e fixam o nitrogênio.</p>
-                        <span class="tech-tag">Nutrição Orgânica</span>
+                        <h4>🌿 Adubação Verde</h4>
+                        <p>Uso de plantas para enriquecer e reestruturar o solo.</p>
+                        <span class="tech-tag">Nutrição</span>
                     </div>
                 </div>
-
-                <div class="agro-card-extended" data-modal="mip">
-                    <div class="agro-img-placeholder">🐞 Manejo Integrado (MIP)</div>
+                <div class="agro-card-extended" data-modal="floresta">
+                    <div class="agro-img-placeholder">🌳 Agrofloresta</div>
                     <div class="agro-card-content">
-                        <h4>🐞 MIP - Manejo Integrado de Pragas</h4>
-                        <p>Estratégia que prioriza o controle biológico natural reduzindo defensivos químicos.</p>
-                        <span class="tech-tag">Proteção Biológica</span>
-                    </div>
-                </div>
-
-                <div class="agro-card-extended" data-modal="safs">
-                    <div class="agro-img-placeholder">🌳 Sistemas Agroflorestais</div>
-                    <div class="agro-card-content">
-                        <h4>🌳 Sistemas Agroflorestais (SAFs)</h4>
-                        <p>Consorciação planejada que combina árvores perenes, arbustos e cultivos agrícolas.</p>
+                        <h4>🌳 Agrofloresta</h4>
+                        <p>Consórcio de árvores com cultivos agrícolas.</p>
                         <span class="tech-tag">Biodiversidade</span>
                     </div>
                 </div>
-
                 <div class="agro-card-extended" data-modal="nascentes">
-                    <div class="agro-img-placeholder">💧 Proteção de Nascentes</div>
+                    <div class="agro-img-placeholder">💧 Nascentes</div>
                     <div class="agro-card-content">
-                        <h4>💧 Recuperação e Proteção de Nascentes</h4>
-                        <p>Blindagem mecânica e reflorestamento de olhos d'água em APPs.</p>
+                        <h4>💧 Proteção de Nascentes</h4>
+                        <p>Salvaguarda de fontes d'água em APPs.</p>
                         <span class="tech-tag">Recursos Hídricos</span>
                     </div>
                 </div>
-
-                <div class="agro-card-extended" data-modal="curvas">
-                    <div class="agro-img-placeholder">🚜 Curvas de Nível</div>
-                    <div class="agro-card-content">
-                        <h4>🚜 Curvas de Nível e Terraceamento</h4>
-                        <p>Estruturação mecânica em encostas para reduzir a velocidade das enxurradas.</p>
-                        <span class="tech-tag">Engenharia Rústica</span>
-                    </div>
-                </div>
             </div>
-        </section>
-    </div>
-
-    <div id="view-licoes" class="view-pane">
-        <section class="card-base">
-            <div class="quiz-header-flex">
-                <div>
-                    <h2 class="card-title">📚 Quiz de Fixação Continuada</h2>
-                    <p class="card-subtitle">Selecione a complexidade desejada para iniciar as avaliações estruturadas:</p>
-                </div>
-                <div class="quiz-selector-buttons">
-                    <button id="btn-quiz-facil" class="btn-level ease-btn">🌱 Fácil (1-10)</button>
-                    <button id="btn-quiz-medio" class="btn-level med-btn">🌿 Médio (11-20)</button>
-                    <button id="btn-quiz-dificil" class="btn-level hard-btn">🌳 Difícil (21-30)</button>
-                </div>
-            </div>
-
-            <div id="info-nivel-bloco" class="quiz-nivel-box">
-                Nível Selecionado: <span id="lbl-nivel-atual" class="text-uppercase">Fácil</span>
-            </div>
-
-            <div class="quiz-progresso-box">
-                <div class="quiz-progresso-text">
-                    <span>Progresso da Avaliação</span>
-                    <span id="quiz-txt-progress">Questão 1 de 10</span>
-                </div>
-                <div class="quiz-bar-bg">
-                    <div id="quiz-bar-fill" class="bar-fill" style="width: 10%;"></div>
-                </div>
-            </div>
-
-            <div id="quiz-question-container">
-                <h3 id="quiz-question-title" class="quiz-question-title">Carregando questão...</h3>
-                <div id="quiz-options-box" class="quiz-options-box"></div>
-            </div>
-
-            <div class="quiz-next-box">
-                <button id="btn-next-question" class="btn-primary" disabled>Próxima Questão ➡️</button>
-            </div>
-        </section>
-    </div>
-
-    <div id="view-materiais" class="view-pane">
-        <section class="card-base">
-            <h2 class="card-title">📂 Central de Recursos Didáticos e Mídias</h2>
-            <p class="card-subtitle">Abra manuais oficiais e vídeo-tutoriais em nosso visualizador seguro incorporado (Viewport Frame):</p>
-
-            <div class="midia-btn-box">
-                <button id="btn-midia-pdf" class="btn-primary">📄 Abrir Cartilha do Solo (UFPR)</button>
-                <button id="btn-midia-video" class="btn-primary">🎥 Assistir Videoaula Prática</button>
-                <button id="btn-referencias" class="btn-secondary">📚 Referências Bibliográficas</button>
-            </div>
-
-            <div id="media-viewport-container" class="midia-container hidden">
-                <div class="midia-header">
-                    <h4 id="media-viewport-title" class="midia-title">📄 Documento Técnico</h4>
-                    <button id="btn-fechar-midia" class="midia-fechar-btn">✕</button>
-                </div>
-                <div id="media-frame-box" class="midia-frame-box"></div>
-            </div>
-        </section>
-    </div>
-
-    <div id="view-desafios" class="view-pane">
-        <section class="card-base">
-            <h2 class="card-title">🎮 Jogo da Memória Computacional Agroecológico</h2>
-            <p class="card-subtitle">Combine os conceitos idênticos utilizando o algoritmo de embaralhamento reverso Fisher-Yates:</p>
-
-            <div class="jogo-header">
-                <div>⚡ Movimentos: <span id="moves-val">0</span></div>
-                <div>⏱️ Cronômetro: <span id="timer-val">00:00</span></div>
-                <button id="btn-reiniciar-jogo" class="btn-secondary ml-auto">🔄 Reiniciar Jogo</button>
-            </div>
-
-            <div id="canvas-tabuleiro-memoria" class="memory-grid-canvas"></div>
         </section>
     </div>
 
     <div id="view-progresso" class="view-pane">
+        <section class="banner-hero">
+            <h1 class="banner-heading">Análise de Desempenho e Resultados</h1>
+            <p class="banner-paragraph">Acompanhe as suas métricas de evolução nas lições teóricas e práticas realizadas até agora na plataforma.</p>
+        </section>
+
         <div class="grid-dashboard">
             <section class="card-base">
-                <h2 class="card-title">📈 Painel de Métricas e Evolução</h2>
-                <p class="card-subtitle">Acompanhe seu desempenho em tempo real nas atividades computacionais executadas:</p>
-
-                <div class="metric-box">
+                <h3 class="card-title">📈 Estatísticas Pessoais</h3>
+                <div class="metric-grid">
                     <div class="metric-item">
                         <div>
-                            <h4 class="metric-title">Último Diagnóstico Efetuado</h4>
-                            <p class="metric-desc">Nota calculada no simulador</p>
+                            <h4 class="metric-title">Desempenho no Simulador</h4>
+                            <p class="metric-desc">Última avaliação de sustentabilidade gerada</p>
                         </div>
-                        <div class="metric-value" id="metric-simulador">--</div>
+                        <div class="metric-value" id="metric-simulador">--%</div>
                     </div>
-
                     <div class="metric-item">
                         <div>
                             <h4 class="metric-title">Acertos no Quiz (Geral)</h4>
@@ -309,7 +213,6 @@
                 </div>
             </section>
 
-            <!-- NOVO QUADRO DE EMISSÃO DIRETA DO CERTIFICADO -->
             <section class="card-base" id="card-certificado-progresso">
                 <h2 class="card-title">🎓 Certificação de Conclusão</h2>
                 <p class="card-subtitle">Status de emissão do seu documento oficial de aproveitamento:</p>
@@ -326,7 +229,7 @@
 </div>
 
 <div id="global-modal-overlay" class="modal-backdrop hidden">
-    <div class="modal-box-body" style="padding: 0; background: transparent; box-shadow: none;">
+    <div class="modal-box-transparent">
         <div id="modal-content-injector"></div>
     </div>
 </div>
