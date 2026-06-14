@@ -9,7 +9,6 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-
 body { background-color: var(--body-bg); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; }
 
 .app-layout { display: flex; min-height: 100vh; }
@@ -62,14 +61,16 @@ body { background-color: var(--body-bg); color: var(--text-dark); min-height: 10
 .bar-rail { width: 100%; height: 8px; background: #edf2ef; border-radius: 10px; }
 .bar-fill { height: 100%; background: var(--accent-lime); width: 0; transition: width 0.5s; }
 
-.agro-grid-complet { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+/* FIX 1: Grelha configurada para 3 colunas (3 em cima, 3 em baixo) */
+.agro-grid-complet { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+@media (max-width: 900px) { .agro-grid-complet { grid-template-columns: repeat(2, 1fr); } }
 .agro-card-extended { background: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-gray); cursor: pointer; transition: 0.2s; }
 .agro-card-extended:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-color: var(--primary-green); }
 .agro-img-placeholder { background: #edf2ef; height: 100px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--primary-green); }
 .agro-card-content { padding: 16px; }
 .tech-tag { display: inline-block; background: #f0f4f1; padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; color: var(--primary-green); margin-top: 5px;}
 
-/* REGRAS EDITAL E CLASSES DO MODAL PROFUNDO */
+/* CLASSES UTILITÁRIAS E MODAL */
 .mt-auto { margin-top: auto; }
 .mt-15 { margin-top: 15px; }
 .hidden { display: none !important; }
@@ -80,7 +81,19 @@ body { background-color: var(--body-bg); color: var(--text-dark); min-height: 10
 .modal-btn-fechar { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-dark); }
 .modal-titulo-item { color: var(--primary-green); font-weight: 800; font-size: 1.4rem; border-bottom: 1px solid var(--border-gray); padding-bottom: 12px; margin-bottom: 16px; }
 
-/* Classes substituindo o Inline do Original */
+/* FIX 2: Layout do Certificado Original e Referências Restauradas */
+.referencias-box { background: #fff; padding: 40px; border-radius: 12px; max-width: 700px; margin: 0 auto; border: 4px double #2d5a27; position: relative;}
+.modal-titulo { color: var(--primary-green); margin-bottom: 10px; font-weight: 800; font-size: 2rem; }
+.certificado-subtitulo { color: #2d5a27; font-size: 1.1rem; margin-bottom: 25px; font-weight: 600; text-transform: uppercase; }
+.certificado-texto { font-size: 1.05rem; color: #444; line-height: 1.8; margin-bottom: 30px; }
+.cert-rodape { display: flex; justify-content: space-between; margin-top: 40px; border-top: 1px solid #ccc; padding-top: 20px; text-align: left; }
+.btn-gap { display: flex; gap: 10px; justify-content: center; margin-top: 25px; }
+.nav-btn.btn-imprimir { background-color: var(--primary-green); color: white; font-weight: bold; border-radius: 6px; padding: 12px 24px; font-size: 1rem; border: none; cursor: pointer; transition: 0.2s;}
+.nav-btn.btn-imprimir:hover { background-color: #163a29; }
+.cert-icone-topo { font-size: 3rem; margin-bottom: 10px; }
+.referencias-lista { line-height: 1.6; color: var(--text-dark); font-size: 0.95rem; text-align: left; margin-top: 15px; padding-left: 20px; list-style-type: disc; }
+.referencias-lista li { margin-bottom: 10px; }
+
 .modal-detailed-intro { background: #f4f7f5; padding: 18px; border-radius: 8px; font-size: 0.92rem; line-height: 1.6; margin-bottom: 16px; color: var(--text-dark); text-align: justify; }
 .modal-detailed-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
 .modal-detailed-col h4 { color: var(--primary-green); margin-bottom: 10px; font-weight: 700; }
@@ -91,7 +104,7 @@ body { background-color: var(--body-bg); color: var(--text-dark); min-height: 10
 .btn-flex-center { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
 .list-unstyled { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
 
-/* QUIZ E MEMÓRIA */
+/* QUIZ */
 .quiz-progresso-text { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: bold; font-size: 0.9rem;}
 .quiz-header-flex { display: flex; justify-content: space-between; align-items: center; }
 .quiz-selector-buttons { display: flex; gap: 8px; }
@@ -105,26 +118,22 @@ body { background-color: var(--body-bg); color: var(--text-dark); min-height: 10
 .quiz-option.correct { border-color: #4caf50; background: #dcedc8; color: #2e7d32; }
 .quiz-option.wrong { border-color: #f44336; background: #ffcdd2; color: #c62828; }
 
-.memory-board { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 15px; perspective: 1000px; }
-.memory-tile { width: 100%; aspect-ratio: 1; cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform 0.5s; }
+/* FIX 3: Efeitos visuais 3D do Jogo da Memória restaurados */
+.memory-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; perspective: 1000px; max-width: 500px; margin: 0 auto; }
+.memory-tile { width: 100%; aspect-ratio: 1; cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform 0.6s; }
 .memory-tile.flipped { transform: rotateY(180deg); }
-.tile-front, .tile-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 2.5rem; }
+.tile-front, .tile-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 2.5rem; border: 2px solid var(--border-gray); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
 .tile-back { background-color: var(--primary-green); color: white; transform: rotateY(0deg); }
-.tile-front { background-color: #fff; border: 2px solid var(--accent-lime); transform: rotateY(180deg); }
-.memory-tile.matched .tile-front { background-color: #e8f5e9; border-color: #4caf50; }
+.tile-front { background-color: #fff; border-color: var(--accent-lime); transform: rotateY(180deg); }
+.memory-tile.matched .tile-front { background-color: #e8f5e9; border-color: #4caf50; opacity: 0.8; }
 
-/* CERTIFICADO E ALERTA SIMULADOR */
 .certificado-status-bloqueado { border: 2px dashed #ccc; padding: 30px; border-radius: 12px; text-align: center; }
 .certificado-status-liberado { border: 2px solid var(--accent-lime); background-color: #f0f9eb; padding: 30px; border-radius: 12px; text-align: center; }
 .lock-icon { font-size: 2.5rem; margin-bottom: 10px; }
 .btn-gerar-cert { background: var(--accent-lime); color: var(--primary-green); font-weight: bold; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 1rem;}
 .btn-gerar-cert:disabled { background: #ccc; cursor: not-allowed; }
 .box-iframe-media { width: 100%; height: 60vh; border: none; border-radius: 8px; }
-
 .alert-box { padding: 15px; border-radius: 8px; font-size: 0.9rem; line-height: 1.5; }
 .bom { background: #dcedc8; color: #2e7d32; border: 1px solid #a5d6a7; }
 .alerta { background: #fff9c4; color: #f57f17; border: 1px solid #ffe082; }
 .perigo { background: #ffcdd2; color: #c62828; border: 1px solid #ef9a9a; }
-
-.cert-referencias-box { text-align: center; border: 4px double var(--primary-green); padding: 40px; border-radius: 8px; }
-.cert-icone-topo { font-size: 3rem; margin-bottom: 10px; }

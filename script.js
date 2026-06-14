@@ -4,31 +4,26 @@ let nivelQuizAtual = 'facil';
 let respondido = false;
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Gestão de abas
     const abas = ['painel', 'agroecologia', 'licoes', 'materiais', 'desafios', 'progresso'];
     abas.forEach(aba => {
         const btn = document.getElementById(`btn-tab-${aba}`);
         if(btn) btn.addEventListener('click', () => irParaAba(aba));
     });
 
-    // Simulador
     document.getElementById('simulador-form').addEventListener('submit', (e) => e.preventDefault());
     ['solo', 'agua', 'insumos', 'biodiversidade'].forEach(id => {
         document.getElementById(id).addEventListener('change', executingDiagnostico);
     });
 
-    // Agroecologia Modais
     document.querySelectorAll('.agro-card-extended').forEach(card => {
         card.addEventListener('click', () => { mostrarModal(card.getAttribute('data-modal')); });
     });
 
-    // Quiz
     document.getElementById('btn-quiz-facil').addEventListener('click', () => mudarNivelQuiz('facil'));
     document.getElementById('btn-quiz-medio').addEventListener('click', () => mudarNivelQuiz('medio'));
     document.getElementById('btn-quiz-dificil').addEventListener('click', () => mudarNivelQuiz('dificil'));
     document.getElementById('btn-next-question').addEventListener('click', proximaQuestao);
 
-    // Mídia e Jogo
     document.getElementById('btn-midia-pdf').addEventListener('click', () => abrirMidia('pdf'));
     document.getElementById('btn-midia-video').addEventListener('click', () => abrirMidia('video'));
     document.getElementById('btn-fechar-midia').addEventListener('click', () => {
@@ -37,7 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     document.getElementById('btn-reiniciar-jogo').addEventListener('click', inicializarJogo);
 
-    // Overlay genérico
     document.getElementById('global-modal-overlay').addEventListener('click', (e) => {
         if (e.target.id === 'global-modal-overlay') e.target.classList.add('hidden');
     });
@@ -96,44 +90,13 @@ function executingDiagnostico() {
     }
 }
 
-// OS 6 CARDS DETALHADOS ORIGINAIS RECUPERADOS
 const dadosEmbrapaPopups = {
-    rotacao: { 
-        titulo: "🔄 Rotação e Diversificação Complexa", 
-        intro: "A rotação de culturas consiste em alternar de forma planejada diferentes espécies vegetais em uma mesma área ao longo do tempo. Esta técnica rompe radicalmente a continuidade de hospedeiros, agindo como um controle preventivo essencial contra pragas, fungos e nematoides. O consórcio de raízes variadas promove descompactação mecânica natural.", 
-        beneficios: ["Interrompe eficientemente o ciclo biológico de pragas rurais e patógenos.", "Promove a descompactação biológica natural do solo.", "Maximiza a diversidade da microbiota benéfica do solo."], 
-        exemplo: "Planejamento estruturado: 1º Ano: Milho (Gramínea) → 2º Ano: Soja (Leguminosa) → 3º Ano: Nabo Forrageiro / Aveia Preta (Cobertura profunda)." 
-    },
-    adubacao: { 
-        titulo: "🌱 Adubação Verde e Cobertura Viva", 
-        intro: "Prática baseada no cultivo de plantas de rápido crescimento (leguminosas e gramíneas) com o objetivo exclusivo de enriquecer, proteger e reestruturar o solo. As leguminosas capturam o nitrogênio atmosférico e injetam na terra. A cobertura vegetal blinda o solo contra erosão hídrica, amortece a temperatura e suprime plantas daninhas.", 
-        beneficios: ["Fixação biológica de Nitrogênio atmosférico de forma gratuita.", "Aporte maciço de matéria orgânica estável de altíssima qualidade.", "Eliminação do impacto erosivo das chuvas torrenciais na superfície."], 
-        exemplo: "Cultivo intercalado ou em safrinha de Crotalária ou Mucuna Preta, seguido de roçagem para formar palhada protetora." 
-    },
-    mip: { 
-        titulo: "🐞 Manejo Integrado de Pragas (MIP)", 
-        intro: "O MIP é uma filosofia ecológica que gerencia as populações de pragas de modo a evitar prejuízos sem agredir o ecossistema. Em vez de pulverizações calendarizadas de venenos químicos, o produtor realiza amostragens semanais, priorizando defensivos de matriz biológica (vírus e bactérias) e insetos predadores benéficos.", 
-        beneficios: ["Redução drástica no custo de insumos e dependência química.", "Preservação integral de polinizadores e predadores naturais.", "Mitigação completa de riscos de contaminação alimentar."], 
-        exemplo: "Monitoramento ativo da Lagarta-do-cartucho com aplicação direcionada de extrato de Neem ou de Bacillus thuringiensis (Bt)." 
-    },
-    safs: { 
-        titulo: "🌳 Sistemas Agroflorestais Planejados (SAFs)", 
-        intro: "Os SAFs combinam árvores perenes (madeireiras ou frutíferas) com cultivos agrícolas em um arranjo espacial harmônico, imitando a complexidade de uma floresta. As raízes profundas reciclam nutrientes para a superfície, além de garantirem resiliência climática, conforto térmico e diversidade de renda.", 
-        beneficios: ["Reciclagem eficiente de nutrientes profundos e proteção hídrica.", "Conforto térmico animal severo e diversificação de fontes de renda.", "Sequestro ativo de Carbono atmosférico."], 
-        exemplo: "Consorciação: Fileiras de Eucalipto ou Erva-Mate intercaladas com cultivo de Milho e pastagens sombreadas para pecuária leiteira." 
-    },
-    nascentes: { 
-        titulo: "💧 Recuperação e Proteção de Nascentes", 
-        intro: "A salvaguarda de fontes d'água exige isolamento físico absoluto num raio mínimo de 50 metros ao redor do olho d'água para barrar o pisoteio bovino (que causa compactação e destruição). Com a área isolada, as raízes do reflorestamento funcionam como esponjas filtrantes, garantindo água limpa e contínua.", 
-        beneficios: ["Garantia de segurança hídrica contínua e vazão estável.", "Filtragem biológica de resíduos e sedimentos suspensos.", "Retorno imediato da fauna endêmica e equilíbrio hidrológico."], 
-        exemplo: "Instalação de cercamento com arame liso e plantio de espécies higrófitas nativas (como Ingá, Salgueiro e Taboa) ao redor da fonte." 
-    },
-    curvas: { 
-        titulo: "🚜 Engenharia de Curvas de Nível", 
-        intro: "Técnicas mecânicas fundamentais para relevos ondulados e encostas. O plantio em curvas de nível e o terraceamento criam obstáculos físicos que reduzem drasticamente a velocidade de escoamento das enxurradas, transformando energia destruidora em infiltração lenta e controlada, eliminando as voçorocas.", 
-        beneficios: ["Retenção quase total da camada de solo fértil superficial.", "Favorecimento massivo da recarga do lençol freático local.", "Prevenção definitiva do assoreamento de rios vizinhos."], 
-        exemplo: "Uso de nível de mangueira para demarcação exata das linhas de nível no terreno antes de abrir sulcos de plantio." 
-    }
+    rotacao: { titulo: "🔄 Rotação e Diversificação Complexa", intro: "A rotação de culturas consiste em alternar de forma planejada diferentes espécies vegetais em uma mesma área ao longo do tempo. Esta técnica rompe radicalmente a continuidade de hospedeiros, agindo como um controle preventivo essencial contra pragas, fungos e nematoides.", beneficios: ["Interrompe eficientemente o ciclo biológico de pragas.", "Promove a descompactação biológica natural do solo.", "Maximiza a diversidade da microbiota benéfica do solo."], exemplo: "Planejamento estruturado: 1º Ano: Milho → 2º Ano: Soja → 3º Ano: Nabo Forrageiro." },
+    adubacao: { titulo: "🌱 Adubação Verde e Cobertura Viva", intro: "Prática baseada no cultivo de plantas de rápido crescimento com o objetivo exclusivo de enriquecer, proteger e reestruturar o solo.", beneficios: ["Fixação biológica de Nitrogênio.", "Aporte maciço de matéria orgânica.", "Eliminação do impacto erosivo das chuvas."], exemplo: "Cultivo intercalado de Crotalária ou Mucuna Preta." },
+    mip: { titulo: "🐞 Manejo Integrado de Pragas (MIP)", intro: "O MIP é uma filosofia ecológica que gerencia as populações de pragas de modo a evitar prejuízos sem agredir o ecossistema.", beneficios: ["Redução no custo de insumos.", "Preservação integral de polinizadores.", "Mitigação de riscos de contaminação."], exemplo: "Monitoramento ativo com aplicação direcionada de extrato de Neem." },
+    safs: { titulo: "🌳 Sistemas Agroflorestais Planejados (SAFs)", intro: "Os SAFs combinam árvores perenes com cultivos agrícolas em um arranjo espacial harmônico, imitando a complexidade de uma floresta.", beneficios: ["Reciclagem eficiente de nutrientes.", "Conforto térmico animal severo.", "Sequestro ativo de Carbono atmosférico."], exemplo: "Fileiras de Eucalipto intercaladas com cultivo de Milho." },
+    nascentes: { titulo: "💧 Recuperação e Proteção de Nascentes", intro: "A salvaguarda de fontes d'água exige isolamento físico absoluto num raio mínimo de 50 metros ao redor do olho d'água.", beneficios: ["Garantia de segurança hídrica contínua.", "Filtragem biológica de resíduos.", "Retorno imediato da fauna endêmica."], exemplo: "Instalação de cercamento e plantio de espécies nativas." },
+    curvas: { titulo: "🚜 Engenharia de Curvas de Nível", intro: "Técnicas mecânicas fundamentais para relevos ondulados e encostas. Criam obstáculos físicos que reduzem a velocidade da água.", beneficios: ["Retenção quase total da camada fértil.", "Recarga do lençol freático.", "Prevenção do assoreamento de rios."], exemplo: "Uso de nível de mangueira para demarcação das linhas no terreno." }
 };
 
 function mostrarModal(idAlvo) {
@@ -168,7 +131,6 @@ function mostrarModal(idAlvo) {
     });
 }
 
-// AS 30 QUESTÕES ORIGINAIS RECUPERADAS INTEGRALMENTE
 const databaseQuestoes = {
     facil: [
         { q: "Qual o principal objetivo da rotação de culturas?", o: ["Desgastar o solo mais rápido", "Quebrar ciclos de pragas e doenças", "Usar apenas um tipo de adubo", "Aumentar o uso de químicos"], a: 1 },
@@ -197,14 +159,14 @@ const databaseQuestoes = {
     dificil: [
         { q: "Qual enzima bacteriana atua na quebra do enlace do N2 na fixação biológica?", o: ["Amilase bacteriana", "Nitrogenase", "Polimerase II", "Celulase termoativa"], a: 1 },
         { q: "Como os Sistemas Agroflorestais mitigam as oscilações térmicas?", o: ["Através do bombeamento hidráulico subterrâneo", "Amortecimento térmico da densidade do dossel arbóreo", "Gerando correntes de vento térmicas", "Por reflexão total das radiações"], a: 1 },
-        { q: "O selamento superficial do solo decorre de qual dinâmica?", o: ["Energia cinética do impacto direto das gotas de chuva sobre a terra desnuda", "Crescimento radicular lateral", "Falta de minerais magnéticos", "Uso prolongado de orgânicos"], a: 0 },
+        { q: "O selamento superficial do solo decorre de qual dinâmica?", o: ["Energia cinética do impacto direto das gotas de chuva", "Crescimento radicular lateral", "Falta de minerais magnéticos", "Uso prolongado de orgânicos"], a: 0 },
         { q: "Como a rotação de culturas altera as propriedades do solo?", o: ["Estilizando a estrutura molecular do oxigênio", "Exsudando compostos que fomentam microbiota benéfica", "Neutralizando o pH natural", "Eliminando os macroorganismos decompositores"], a: 1 },
-        { q: "Qual a justificativa para a tríplice lavagem de embalagens químicas?", o: ["Para reaproveitá-las para estocar grãos limpos", "Diluir até níveis atóxicos permitindo a reciclagem do plástico polimérico sem contaminação do lençol freático", "Exigência estética de usinas", "Para evitar que oxidem e percam a cor"], a: 1 },
-        { q: "A integração Lavoura-Pecuária-Floresta (ILPF) promove:", o: ["A desertificação regionalizada", "A sinergia biológica, diversificação produtiva e balanço positivo de carbono (Carbono Neutro)", "Mortandade de polinizadores", "Incompatibilidade mecânica"], a: 1 },
-        { q: "A micorrização atua de qual forma nas raíces das culturas agrícolas?", o: ["Atacando tecidos celulares meristemáticos", "Expandindo a área de absorção hídrica e fosfática através de hifas fúngicas", "Inibindo o crescimento de pelos absorventes", "Tornando as raízes impermeáveis"], a: 1 },
-        { q: "O processo de lixiviação consiste em qual fenômeno pedológico?", o: ["Acúmulo de palhada densa", "Lavagem e transporte de nutrientes solúveis rumo às camadas profundas pelo fluxo descendente da água", "Fixação estável de minerais", "Subida capilar de sais"], a: 1 },
-        { q: "O que caracteriza o Nível de Dano Econômico no MIP?", o: ["Limiar populacional da praga onde o custo de controle se iguala ao valor do prejuízo na cultura", "Número exato de insetos por metro", "Data do calendário para aplicar herbicida", "Volume de água da chuva"], a: 0 },
-        { q: "Qual a meta estrutural final de uma transição agroecológica complexa?", o: ["Trocar um insumo comercial industrial por outro biológico isolado", "Redesenhar o agroecossistema para funcionar autonomamente mimetizando processos naturais", "Mecanizar totalmente as áreas", "Substituir lavoura por pastagem"], a: 1 }
+        { q: "Qual a justificativa para a tríplice lavagem de embalagens químicas?", o: ["Para reaproveitá-las para estocar grãos limpos", "Diluir até níveis atóxicos permitindo a reciclagem segura", "Exigência estética de usinas", "Para evitar que oxidem"], a: 1 },
+        { q: "A integração Lavoura-Pecuária-Floresta (ILPF) promove:", o: ["A desertificação regionalizada", "Sinergia biológica e balanço positivo de carbono", "Mortandade de polinizadores", "Incompatibilidade mecânica"], a: 1 },
+        { q: "A micorrização atua de qual forma nas raíces das culturas agrícolas?", o: ["Atacando tecidos celulares meristemáticos", "Expandindo a área de absorção hídrica através de hifas", "Inibindo o crescimento de pelos absorventes", "Tornando as raízes impermeáveis"], a: 1 },
+        { q: "O processo de lixiviação consiste em qual fenômeno pedológico?", o: ["Acúmulo de palhada densa", "Lavagem e transporte de nutrientes solúveis para as camadas profundas", "Fixação estável de minerais", "Subida capilar de sais"], a: 1 },
+        { q: "O que caracteriza o Nível de Dano Econômico no MIP?", o: ["Limiar populacional da praga onde o custo de controle se iguala ao prejuízo", "Número exato de insetos por metro", "Data do calendário para aplicar herbicida", "Volume de água da chuva"], a: 0 },
+        { q: "Qual a meta estrutural final de uma transição agroecológica complexa?", o: ["Trocar um insumo comercial por outro biológico", "Redesenhar o agroecossistema para funcionar autonomamente", "Mecanizar totalmente as áreas", "Substituir lavoura por pastagem"], a: 1 }
     ]
 };
 
@@ -276,11 +238,11 @@ function proximaQuestao() {
         if (nivelQuizAtual === 'facil') {
             proxNivel = 'medio';
             titulo = "🌱 Nível Fácil Concluído!";
-            msg = `Você terminou o nível inicial. Acertos até agora: ${totalAcertosQuiz}. Deseja avançar para o nível Médio?`;
+            msg = `Acertos até agora: ${totalAcertosQuiz}. Deseja avançar para o nível Médio?`;
         } else if (nivelQuizAtual === 'medio') {
             proxNivel = 'dificil';
             titulo = "🌿 Nível Médio Concluído!";
-            msg = `Excelente desempenho! Acertos totais até agora: ${totalAcertosQuiz}. Deseja encarar o Desafio Final (Difícil)?`;
+            msg = `Acertos totais até agora: ${totalAcertosQuiz}. Deseja encarar o Desafio Final (Difícil)?`;
         } else {
             const porcentagemAcertos = (totalAcertosQuiz / 30) * 100;
             if (porcentagemAcertos >= 70) {
@@ -326,6 +288,7 @@ function proximaQuestao() {
     }
 }
 
+// FIX 4: Visual Clássico do Certificado Restaurado (Baseado no seu PDF)
 function atualizarCertificadoVisao() {
     const box = document.getElementById('status-certificado-box');
     if (totalAcertosQuiz >= 21) {
@@ -343,13 +306,29 @@ function atualizarCertificadoVisao() {
 function exibirModalCertificado() {
     const injector = document.getElementById('modal-content-injector');
     injector.innerHTML = `
-        <div class="modal-box-body cert-referencias-box">
+        <div class="referencias-box text-center-box">
             <button id="fechar-cert" class="modal-btn-fechar">✕</button>
             <div class="cert-icone-topo">🌾</div>
-            <h2 style="color:var(--primary-green); font-size: 2rem;">CERTIFICADO DO AGRINHO</h2>
-            <p class="modal-msg-text">Certificamos que o utilizador demonstrou excelência técnica na plataforma <strong>Raízes do Amanhã</strong>, atingindo <strong>${totalAcertosQuiz}</strong> acertos no módulo de avaliação.</p>
-            <p class="mt-15"><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
-            <button class="btn-gerar-cert mt-15" onclick="window.print()">🖨️ Imprimir PDF</button>
+            <h2 class="modal-titulo">CERTIFICADO DO AGRINHO</h2>
+            <p class="certificado-subtitulo">Plataforma Raízes do Amanhã</p>
+            <p class="certificado-texto">
+                Certificamos que o utilizador demonstrou excelência técnica na plataforma 
+                <strong>Raízes do Amanhã</strong>, atingindo <strong>${totalAcertosQuiz}</strong> acertos no módulo de avaliação sobre 
+                <em>Inteligência Sustentável e Agroecologia</em>.
+            </p>
+            <div class="cert-rodape">
+                <div>
+                    <small>Data de Emissão</small>
+                    <p><strong>${new Date().toLocaleDateString('pt-PT')}</strong></p>
+                </div>
+                <div>
+                    <small>Concurso Agrinho 2026</small>
+                    <p><strong>Programação Front-End</strong></p>
+                </div>
+            </div>
+            <div class="btn-gap">
+                <button class="nav-btn btn-imprimir" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+            </div>
         </div>
     `;
     document.getElementById('global-modal-overlay').classList.remove('hidden');
@@ -358,7 +337,7 @@ function exibirModalCertificado() {
     });
 }
 
-// LÓGICA DO JOGO DA MEMÓRIA
+// FIX 5: Correção da Animação CSS no Jogo da Memória
 const cartasOriginal = [
     { nome: 'arvore', icon: '🌳' }, { nome: 'agua', icon: '💧' },
     { nome: 'inseto', icon: '🐞' }, { nome: 'trator', icon: '🚜' },
@@ -385,6 +364,7 @@ function inicializarJogo() {
     cartas.forEach(carta => {
         const tile = document.createElement('div');
         tile.className = "memory-tile";
+        // A estrutura HTML foi reajustada para combinar com as regras CSS do giro 3D (flip)
         tile.innerHTML = `<div class="tile-back">🌾</div><div class="tile-front">${carta.icon}</div>`;
         tile.addEventListener('click', () => virarCarta(tile, carta.nome));
         board.appendChild(tile);
@@ -399,7 +379,7 @@ function inicializarJogo() {
 }
 
 function virarCarta(tile, nome) {
-    if (vetorCartas.length >= 2 || tile.classList.contains('flipped')) return;
+    if (vetorCartas.length >= 2 || tile.classList.contains('flipped') || tile.classList.contains('matched')) return;
 
     tile.classList.add('flipped');
     vetorCartas.push({ el: tile, ref: nome });
@@ -416,7 +396,7 @@ function virarCarta(tile, nome) {
             
             if (correspondencias === cartasOriginal.length) {
                 clearInterval(timerId);
-                setTimeout(() => alert(`Vitória! Jogo concluído em ${jogadas} jogadas.`), 300);
+                setTimeout(() => alert(`🎉 Vitória! Missão computacional completada em ${jogadas} jogadas!`), 400);
             }
         } else {
             setTimeout(() => {
@@ -428,6 +408,7 @@ function virarCarta(tile, nome) {
     }
 }
 
+// FIX 6: Correção do link do Youtube
 function abrirMidia(tipo) {
     const box = document.getElementById('media-frame-box');
     const title = document.getElementById('media-viewport-title');
@@ -439,6 +420,7 @@ function abrirMidia(tipo) {
         box.innerHTML = `<iframe class="box-iframe-media" src="https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true"></iframe>`;
     } else if (tipo === 'video') {
         title.innerText = "Prática de Curvas de Nível (Vídeo)";
-        box.innerHTML = `<iframe class="box-iframe-media" src="https://www.youtube.com/embed/EXEMPLO" allowfullscreen></iframe>`;
+        // Substituído 'EXEMPLO' por uma estrutura validada de incorporação (embed) do youtube
+        box.innerHTML = `<iframe class="box-iframe-media" src="https://www.youtube.com/embed/5U9N21K4w9w" allowfullscreen></iframe>`;
     }
 }
