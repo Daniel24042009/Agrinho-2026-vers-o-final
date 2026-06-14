@@ -1,65 +1,35 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Vincular alternância de abas com segurança
     const abas = ['painel', 'agroecologia', 'licoes', 'materiais', 'desafios', 'progresso'];
     abas.forEach(aba => {
         const btn = document.getElementById(`btn-tab-${aba}`);
         if(btn) btn.addEventListener('click', () => irParaAba(aba));
     });
 
-    // Proteger o formulário do simulador
-    const simuladorForm = document.getElementById('simulador-form');
-    if (simuladorForm) {
-        simuladorForm.addEventListener('submit', (e) => e.preventDefault());
-    }
-
-    // Proteger os seletores do simulador de diagnóstico
+    document.getElementById('simulador-form').addEventListener('submit', (e) => e.preventDefault());
     ['solo', 'agua', 'insumos', 'biodiversidade'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener('change', executingDiagnostico);
+        document.getElementById(id).addEventListener('change', executingDiagnostico);
     });
 
-    // Proteger os cards expandidos da Embrapa
     document.querySelectorAll('.agro-card-extended').forEach(card => {
         card.addEventListener('click', () => { mostrarModal(card.getAttribute('data-modal')); });
     });
 
-    // Proteger os botões do Quiz de Fixação
-    const btnFacil = document.getElementById('btn-quiz-facil');
-    if (btnFacil) btnFacil.addEventListener('click', () => mudarNivelQuiz('facil'));
-    
-    const btnMedio = document.getElementById('btn-quiz-medio');
-    if (btnMedio) btnMedio.addEventListener('click', () => mudarNivelQuiz('medio'));
-    
-    const btnDificil = document.getElementById('btn-quiz-dificil');
-    if (btnDificil) btnDificil.addEventListener('click', () => mudarNivelQuiz('dificil'));
-    
-    const btnNext = document.getElementById('btn-next-question');
-    if (btnNext) btnNext.addEventListener('click', proximaQuestao);
+    document.getElementById('btn-quiz-facil').addEventListener('click', () => mudarNivelQuiz('facil'));
+    document.getElementById('btn-quiz-medio').addEventListener('click', () => mudarNivelQuiz('medio'));
+    document.getElementById('btn-quiz-dificil').addEventListener('click', () => mudarNivelQuiz('dificil'));
+    document.getElementById('btn-next-question').addEventListener('click', proximaQuestao);
 
-    // Proteger os botões de mídias e referências
-    const btnPdf = document.getElementById('btn-midia-pdf');
-    if (btnPdf) btnPdf.addEventListener('click', () => abrirMidia('pdf'));
-    
-    const btnVideo = document.getElementById('btn-midia-video');
-    if (btnVideo) btnVideo.addEventListener('click', () => abrirMidia('video'));
-    
-    const btnFecharMidia = document.getElementById('btn-fechar-midia');
-    if (btnFecharMidia) btnFecharMidia.addEventListener('click', fecharMidia);
-    
-    const btnReferencias = document.getElementById('btn-referencias');
-    if (btnReferencias) btnReferencias.addEventListener('click', mostrarReferencias);
+    document.getElementById('btn-midia-pdf').addEventListener('click', () => abrirMidia('pdf'));
+    document.getElementById('btn-midia-video').addEventListener('click', () => abrirMidia('video'));
+    document.getElementById('btn-fechar-midia').addEventListener('click', fecharMidia);
+    document.getElementById('btn-referencias').addEventListener('click', mostrarReferencias);
 
-    // Proteger o jogo da memória e overlay global
-    const btnReiniciarJogo = document.getElementById('btn-reiniciar-jogo');
-    if (btnReiniciarJogo) btnReiniciarJogo.addEventListener('click', inicializarJogo);
+    document.getElementById('btn-reiniciar-jogo').addEventListener('click', inicializarJogo);
     
-    const overlayModal = document.getElementById('global-modal-overlay');
-    if (overlayModal) overlayModal.addEventListener('click', fecharModalPorCliqueFora);
+    document.getElementById('global-modal-overlay').addEventListener('click', fecharModalPorCliqueFora);
 
-    // INICIALIZAÇÃO AUTOMÁTICA SEGURA
-    irParaAba('painel'); // Força a ativação visual da primeira tela
-    executingDiagnostico(); // Calcula o simulador inicial
-    mudarNivelQuiz('facil'); // Monta a primeira pergunta do quiz automaticamente
+    executingDiagnostico();
+    setTimeout(() => { if(document.getElementById('quiz-question-title')) renderizarQuestaoQuiz(); }, 500);
 });
 
 function irParaAba(nomeAba) {
@@ -82,28 +52,18 @@ function irParaAba(nomeAba) {
     };
 
     if (bibliotecaTitulos[nomeAba]) {
-        const titleEl = document.getElementById('page-title');
-        const subtitleEl = document.getElementById('page-subtitle');
-        if (titleEl) titleEl.innerText = bibliotecaTitulos[nomeAba][0];
-        if (subtitleEl) subtitleEl.innerText = bibliotecaTitulos[nomeAba][1];
+        document.getElementById('page-title').innerText = bibliotecaTitulos[nomeAba][0];
+        document.getElementById('page-subtitle').innerText = bibliotecaTitulos[nomeAba][1];
     }
 
     if (nomeAba === 'desafios') inicializarJogo();
 }
 
 function executingDiagnostico() {
-    const soloEl = document.getElementById('solo');
-    const aguaEl = document.getElementById('agua');
-    const insumosEl = document.getElementById('insumos');
-    const biodiversidadeEl = document.getElementById('biodiversidade');
-
-    // Se os elementos seletores não existirem na tela, aborta para não quebrar o código
-    if (!soloEl || !aguaEl || !insumosEl || !biodiversidadeEl) return;
-
-    const solo = soloEl.value;
-    const agua = aguaEl.value;
-    const insumos = insumosEl.value;
-    const biodiversidade = biodiversidadeEl.value;
+    const solo = document.getElementById('solo').value;
+    const agua = document.getElementById('agua').value;
+    const insumos = document.getElementById('insumos').value;
+    const biodiversidade = document.getElementById('biodiversidade').value;
 
     let nota = 0;
     if (solo === 'excelente') nota += 25; else if (solo === 'alto') nota += 18; else if (solo === 'medio') nota += 10; else nota += 3;
@@ -111,81 +71,72 @@ function executingDiagnostico() {
     if (insumos === 'excelente') nota += 25; else if (insumos === 'alto') nota += 18; else if (insumos === 'medio') nota += 10; else nota += 3;
     if (biodiversidade === 'excelente') nota += 25; else if (biodiversidade === 'alto') nota += 18; else if (biodiversidade === 'medio') nota += 10; else nota += 3;
 
-    const ptsVal = document.getElementById('points-valor');
-    const metricSim = document.getElementById('metric-simulador');
-    if (ptsVal) ptsVal.innerText = nota;
-    if (metricSim) metricSim.innerText = nota + "%";
+    document.getElementById('pontos-valor').innerText = nota;
+    document.getElementById('metric-simulador').innerText = nota + "%";
 
-    const pctCultivo = document.getElementById('pct-cultivo');
-    const barCultivo = document.getElementById('bar-cultivo');
-    if (pctCultivo) pctCultivo.innerText = Math.round(nota * 0.9) + "%";
-    if (barCultivo) barCultivo.style.width = Math.round(nota * 0.9) + "%";
-
-    const pctAmbiental = document.getElementById('pct-ambiental');
-    const barAmbiental = document.getElementById('bar-ambiental');
-    if (pctAmbiental) pctAmbiental.innerText = Math.round(nota * 1.0) + "%";
-    if (barAmbiental) barAmbiental.style.width = Math.round(nota * 1.0) + "%";
-
-    const pctGestao = document.getElementById('pct-gestao');
-    const barGestao = document.getElementById('bar-gestao');
-    if (pctGestao) pctGestao.innerText = Math.round(nota * 0.85) + "%";
-    if (barGestao) barGestao.style.width = Math.round(nota * 0.85) + "%";
+    document.getElementById('pct-cultivo').innerText = Math.round(nota * 0.9) + "%";
+    document.getElementById('bar-cultivo').style.width = Math.round(nota * 0.9) + "%";
+    document.getElementById('pct-ambiental').innerText = Math.round(nota * 1.0) + "%";
+    document.getElementById('bar-ambiental').style.width = Math.round(nota * 1.0) + "%";
+    document.getElementById('pct-gestao').innerText = Math.round(nota * 0.85) + "%";
+    document.getElementById('bar-gestao').style.width = Math.round(nota * 0.85) + "%";
 
     const badge = document.getElementById('status-badge');
     const detalheBox = document.getElementById('resultado-diagnostico-detalhe');
-    
-    if (detalheBox) {
-        detalheBox.classList.remove('hidden');
-        if (nota >= 80) {
-            if(badge) { badge.className = "pill-status state-active"; badge.innerText = "EXCELENTE"; }
-            detalheBox.className = "output-alert bom";
-            detalheBox.innerHTML = `<strong>✨ Índice Impecável: ${nota}%</strong><br>Propriedade modelo! Os manejos adotados conservam a macroestrutura rústica do solo.`;
-        } else if (nota >= 50) {
-            if(badge) { badge.className = "pill-status state-wait"; badge.innerText = "REGULAR"; }
-            detalheBox.className = "output-alert alerta";
-            detalheBox.innerHTML = `<strong>🌿 Índice Intermediário: ${nota}%</strong><br>Atenção às recomendações técnicas. É viável expandir o plantio direto.`;
-        } else {
-            if(badge) { badge.className = "pill-status state-wait"; badge.innerText = "ALERTA CRÍTICO"; badge.style.background="#ffebee"; badge.style.color="#c62828"; }
-            detalheBox.className = "output-alert perigo";
-            detalheBox.innerHTML = `<strong>⚠️ Risco Severo Detectado: ${nota}%</strong><br>Alto índice de degradação estrutural e lixiviação.`;
-        }
+    detalheBox.classList.remove('hidden');
+
+    if (nota >= 80) {
+        badge.className = "pill-status state-active";
+        badge.innerText = "EXCELENTE";
+        detalheBox.className = "output-alert bom";
+        detalheBox.innerHTML = `<strong>✨ Índice Impecável: ${nota}%</strong><br>Propriedade modelo! Os manejos adotados conservam a macroestrutura rústica do solo.`;
+    } else if (nota >= 50) {
+        badge.className = "pill-status state-wait";
+        badge.innerText = "REGULAR";
+        detalheBox.className = "output-alert alerta";
+        detalheBox.innerHTML = `<strong>🌿 Índice Intermediário: ${nota}%</strong><br>Atenção às recomendações técnicas. É viável expandir o plantio direto.`;
+    } else {
+        badge.className = "pill-status state-wait";
+        badge.innerText = "ALERTA CRÍTICO";
+        detalheBox.className = "output-alert perigo";
+        detalheBox.innerHTML = `<strong>⚠️ Risco Severo Detectado: ${nota}%</strong><br>Alto índice de degradação estrutural e lixiviação.`;
     }
 }
 
 const dadosEmbrapaPopups = {
     rotacao: { 
         titulo: "🔄 Rotação e Diversificação Complexa de Culturas", 
-        intro: "A rotação de culturas consiste em alternar de forma planejada, sistemática e ordenada diferentes espécies vegetais em uma mesma área agrícola ao longo do tempo...", 
+        intro: "A rotação de culturas consiste em alternar de forma planejada, sistemática e ordenada diferentes espécies vegetais em uma mesma área agrícola ao longo do tempo. Esta técnica rompe radicalmente a continuidade de hospedeiros, agindo como um controle preventivo essencial contra a proliferação de pragas, fungos fitopatogênicos e nematoides específicos do solo. Além disso, o consórcio de plantas com arquiteturas de raízes variadas (superficiais combinadas com pivotantes profundas) promove a descompactação mecânica natural do solo, melhora a porosidade e potencializa a infiltração de água e a ciclagem profunda de nutrientes preciosos.", 
         beneficios: ["Interrompe eficientemente o ciclo biológico de pragas rurais e patógenos.", "Promove a descompactação biológica natural através de múltiplos sistemas radiculares.", "Maximiza a atividade biológica e a diversidade da microbiota benéfica do solo."], 
         exemplo: "Planejamento estruturado: 1º Ano: Milho (Gramínea) → 2º Ano: Soja (Leguminosa) → 3º Ano: Nabo Forrageiro / Aveia Preta (Cobertura profunda)." 
     },
     adubacao: { 
         titulo: "🌱 Adubação Verde e Cobertura Viva de Solo", 
-        intro: "Esta prática milenar baseia-se no cultivo planejado de plantas de rápido crescimento...", 
+        intro: "Esta prática milenar baseia-se no cultivo planejado de plantas de rápido crescimento (principalmente leguminosas, crucíferas e gramíneas) com o objetivo exclusivo de enriquecer, proteger e reestruturar o solo. As espécies selecionadas possuem uma capacidade simbiótica incrível com bactérias fixadoras, capturando o nitrogênio gasoso livre na atmosfera e injetando-o diretamente na terra. Ao formar uma camada vegetal densa sobre a superfície, a adubação verde blinda a estrutura do solo contra a erosão hídrica severa, amortece oscilações extremas de temperatura e suprime o desenvolvimento de plantas daninhas por competição por luz.", 
         beneficios: ["Fixação biológica de Nitrogênio atmosférico de forma gratuita.", "Aporte maciço de matéria orgânica estável de altíssima qualidade.", "Eliminação do impacto erosivo das chuvas torrenciais na superfície."], 
         exemplo: "Cultivo intercalado ou em safrinha de Crotalária ou Mucuna Preta, seguido de roçagem para a formação de uma camada uniforme de palhada protetora." 
     },
     mip: { 
         titulo: "🐞 Manejo Integrado de Pragas (MIP-Agroecologia)", 
-        intro: "O MIP é uma filosofia moderna e ecológica de tomada de decisões...", 
+        intro: "O MIP é uma filosofia moderna e ecológica de tomada de decisões que gerencia as populações de pragas de modo a evitar que causem prejuízos econômicos, sem agredir o ecossistema. Em vez de pulverizações calendarizadas de veneno químico, o produtor realiza amostragens de campo semanais. A intervenção só ocorre se a população atingir o rigoroso Nível de Dano Econômico. O sistema prioriza defensivos de matriz biológica (como vírus, bactérias e fungos controladores) e incentiva a manutenção ativa de insetos predadores benéficos, restaurando a autorregulação natural da lavoura.", 
         beneficios: ["Redução drástica no custo de insumos e dependência química industrial.", "Preservação integral de polinizadores e predadores naturais (joaninhas, tesourinhas).", "Mitigação completa de riscos de contaminação e toxicidade alimentar."], 
-        exemplo: "Monitoramento active da Lagarta-do-cartucho com aplicação direcionada de extrato de Neem ou do bioinseticidas biológicos à base de Bacillus thuringiensis (Bt)." 
+        exemplo: "Monitoramento ativo da Lagarta-do-cartucho com aplicação direcionada de extrato de Neem ou do bioinseticidas biológicos à base de Bacillus thuringiensis (Bt)." 
     },
     safs: { 
         titulo: "🌳 Sistemas Agroflorestais Planejados (SAFs)", 
-        intro: "Os SAFs representam a vanguarda da sustentabilidade ao combinar intencionalmente árvores perenes...", 
+        intro: "Os SAFs representam a vanguarda da sustentabilidade ao combinar intencionalmente árvores perenes (madeireiras, frutíferas ou nativas) com cultivos agrícolas anuais e/ou criação de animais em um arranjo espacial e temporal harmônico. Esse design inteligente imita com perfeição a complexidade estrutural, a sucessão biológica e a estabilidade de uma floresta nativa. As raízes profundas das árvores realizam um bombeamento hidráulico e reciclagem de nutrientes de camadas profundas para a superfície. Além do ganho ambiental por sequestro de carbono e abrigo da fauna, garante resiliência econômica ao diversificar a produção anual da propriedade.", 
         beneficios: ["Reciclagem altamente eficiente de nutrientes profundos e proteção hídrica.", "Conforto térmico animal severo e diversificação de fontes de renda na mesma área.", "Sequestro ativo de Carbono atmosférico mitigando gases estufa."], 
         exemplo: "Consorciação agroflorestal: Fileiras de Eucalipto ou Erva-Mate intercaladas com cultivo de Milho, Feijão e pastagens sombreadas para pecuária leiteira." 
     },
     nascentes: { 
         titulo: "💧 Recuperação, Cercamento e Proteção de Nascentes", 
-        intro: "A salvaguarda de fontes d'água em Áreas de Preservação Permanente (APP)...", 
+        intro: "A salvaguarda de fontes d'água em Áreas de Preservação Permanente (APP) exige ações coordenadas estruturais e ecológicas. O passo primordial é o isolamento físico absoluto em um raio mínimo de 50 metros ao redor do olho d'água para barrar o pisoteio de bovinos, que causa compactação drástica e destruição marginal. Uma vez isolada a área, procede-se ao reflorestamento denso com mudas nativas da região. As copas reduzem a evaporação direta, enquanto as raízes funcionam como verdadeiras esponjas filtrantes, retendo defensivos agrícolas ou sedimentos das enxurradas e garantindo água limpa e contínua.", 
         beneficios: ["Garantia de segurança hídrica contínua e vazão estável ao longo do ano.", "Filtragem biológica de resíduos e sedimentos suspensos.", "Retorno imediato da fauna endêmica e equilíbrio hidrológico."], 
         exemplo: "Instalação de cercamento com arame liso rígido e plantio de espécies higrófitas nativas (como Ingá, Salgueiro e Taboa) ao redor de fontes degradadas." 
     },
     curvas: { 
         titulo: "🚜 Engenharia de Curvas de Nível e Terraceamento", 
-        intro: "Técnicas mecânicas fundamentais de conservação de solo recomendadas para relevos ondulados...", 
+        intro: "Técnicas mecânicas fundamentais de conservação de solo recomendadas para relevos ondulados e encostas. O plantio em curvas de nível consiste em realizar todas as operações de preparo e semeadura seguindo linhas imaginárias perpendiculares ao declive (em nível altimétrico constante). O terraceamento adiciona barreiras físicas de terra (terraços) espaçados. Esse sistema cria obstáculos físicos severos que reduzem drasticamente a velocidade de escoamento das águas das enxurradas, transformando energia cinética destruidora em infiltração lenta e controlada, eliminando o surgimento de voçorocas.", 
         beneficios: ["Retenção quase total da camada de solo fértil superficial.", "Favorecimento massivo da recarga do lençol freático local por infiltração.", "Prevenção definitiva do assoreamento e contaminação de rios vizinhos."], 
         exemplo: "Uso do aparelho 'Pé-de-Galinha' ou nível de mangueira para demarcação exata das linhas de nível no terreno antes de abrir sulcos de plantio." 
     }
@@ -209,28 +160,21 @@ function mostrarModal(idAlvo) {
                     <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:10px; font-size:0.88rem; line-height:1.4;">${bulletListHtml}</ul>
                 </div>
                 <div>
-                    <h4 style="color:var(--primary-green); margin-bottom:10px; font-weight:700;">🚜 Aplicação Técnico no Campo:</h4>
+                    <h4 style="color:var(--primary-green); margin-bottom:10px; font-weight:700;">🚜 Aplicação Técnica no Campo:</h4>
                     <p style="font-size:0.88rem; line-height:1.5; background:#fff8e1; padding:12px; border-left:4px solid #ffb300; border-radius:4px; color:#5d4037;">${item.exemplo}</p>
                 </div>
             </div>
         </div>
     `;
 
-    const injector = document.getElementById('modal-content-injector');
-    const overlay = document.getElementById('global-modal-overlay');
-    if (injector && overlay) {
-        injector.innerHTML = layoutInjetado;
-        overlay.classList.remove('hidden');
-        const btnFechar = document.getElementById('btn-fechar-modal-generico');
-        if(btnFechar) btnFechar.addEventListener('click', ocultarModal);
-    }
+    document.getElementById('modal-content-injector').innerHTML = layoutInjetado;
+    document.getElementById('global-modal-overlay').classList.remove('hidden');
+    document.getElementById('btn-fechar-modal-generico').addEventListener('click', ocultarModal);
 }
 
 function ocultarModal() {
-    const overlay = document.getElementById('global-modal-overlay');
-    const injector = document.getElementById('modal-content-injector');
-    if(overlay) overlay.classList.add('hidden');
-    if(injector) injector.innerHTML = '';
+    document.getElementById('global-modal-overlay').classList.add('hidden');
+    document.getElementById('modal-content-injector').innerHTML = '';
 }
 
 function fecharModalPorCliqueFora(e) {
@@ -254,7 +198,7 @@ const databaseQuestoes = {
         { q: "No plantio consorciado de milho e soja, qual a vantagem da soja?", o: ["Sombra excessiva", "Fornecimento biológico de nitrogênio", "Atrair lagartas", "Produzir sementes inférteis"], a: 1 },
         { q: "Qual a principal função do terraceamento em declives acentuados?", o: ["Facilitar o trânsito de pedestres", "Fracionar e reter o fluxo volumoso das enxurradas", "Aumentar a evaporação da água", "Estilizar a paisagem rústica"], a: 1 },
         { q: "O nível econômico de dano no MIP serve para determinar o quê?", o: ["O preço final do grão no mercado", "O momento exato em que a praga causa prejuízo real justificando intervenção", "O custo do combustível do trator", "A quantidade de adubo por hectare"], a: 1 },
-        { q: "Qual element é central na transição agroecológica?", o: ["Uso massivo de sementes transgênicas", "Redução gradual de insumos sintéticos industriais", "Abandono total da rotação de culturas", "Aumento do desmatamento legal"], a: 1 },
+        { q: "Qual elemento é central na transição agroecológica?", o: ["Uso massivo de sementes transgênicas", "Redução gradual de insumos sintéticos industriais", "Abandono total da rotação de culturas", "Aumento do desmatamento legal"], a: 1 },
         { q: "Que benefício os Corredores Ecológicos trazem às propriedades?", o: ["Isolamento completo dos animais", "Livre trânsito e fluxo gênico da fauna silvestre", "Facilidade para queimar os campos", "Aumento da erosão nas margens"], a: 1 },
         { q: "A 'cobertura morta' atua como barreira contra qual processo físico?", o: ["Compactação subterrânea pura", "Impacto direto das gotas de chuva evitando o selamento superficial", "Evaporação profunda", "Crescimento de raíces pivotantes"], a: 1 },
         { q: "Por que árvores nativas são mantidas em pastagens no modelo sustentável?", o: ["Para atrapalhar o maquinário", "Proporcionar conforto térmico ao gado e reciclar nutrientes", "Secar o solo ao redor", "Impedir o nascimento do capim"], a: 1 },
@@ -270,7 +214,7 @@ const databaseQuestoes = {
         { q: "Qual a justificativa físico-química para a tríplice lavagem de embalagens?", o: ["Limpar o rótulo para facilitar a leitura", "Desprender mais de 99,9% dos resíduos químicos impregnados maximizando a descontaminação", "Alterar a composição molecular do plástico", "Permitir o reuso doméstico"], a: 1 },
         { q: "Na engenharia de solo, qual o princípio hidráulico das curvas de nível com terraços de retenção?", o: ["Acelerar o escoamento hídrico", "Infiltrar a água por redução da energia potencial gravitacional da enxurrada", "Evaporar o excesso de chuva", "Drenar a umidade para fora"], a: 1 },
         { q: "Qual a principal limitação ecológica no uso continuado de bioinseticidas à base de Bacillus thuringiensis (Bt)?", o: ["Eles volatilizam rapidamente abaixo de 10°C", "Seleção de populações de pragas resistentes caso manejados sem rotação de princípios ativos", "Intoxicação severa de polinizadores", "Incompatibilidade mecânica"], a: 1 },
-        { q: "A micorrização atua de qual forma nas raíces das culturas agrícolas?", o: ["Atacando tecidos celulares meristemáticos", "Expandindo a área de absorção hídrica e fosfática através de hifas fúngicas simbióticas", "Inibindo o crescimento de pelos absorventes", "Tornando as raíces impermeáveis"], a: 1 },
+        { q: "A micorrização atua de qual forma nas raíces das culturas agrícolas?", o: ["Atacando tecidos celulares meristemáticos", "Expandindo a área de absorção hídrica e fosfática através de hifas fúngicas simbióticas", "Inibindo o crescimento de pelos absorventes", "Tornando as raízes impermeáveis"], a: 1 },
         { q: "O processo de lixiviação consiste em qual fenômeno pedológico?", o: ["Acúmulo de palhada densa", "Lavagem e transporte de nutrientes solúveis rumo às camadas profundas pelo fluxo hídrico descendente", "Fixação estável de minerais", "Subida capilar de sais minerais"], a: 1 },
         { q: "Qual a meta estrutural final de uma transição agroecológica complexa de nível 3?", o: ["Trocar um insumo comercial industrial por outro biológico isolado", "Redesenhar o agroecossistema para funcionar autonomamente mimetizando processos naturais", "Mecanizar totalmente as áreas de preservação florestal", "Substituir a lavoura por pastagem intensiva"], a: 1 }
     ]
@@ -286,54 +230,41 @@ function mudarNivelQuiz(novoNivel) {
     
     if(novoNivel === 'facil') totalAcertosQuiz = 0;
 
-    const lblNivel = document.getElementById('lbl-nivel-atual');
-    if (lblNivel) lblNivel.innerText = novoNivel;
-
-    const btnNext = document.getElementById('btn-next-question');
-    if (btnNext) btnNext.disabled = true;
+    document.getElementById('lbl-nivel-atual').innerText = novoNivel;
+    document.getElementById('btn-next-question').disabled = true;
 
     renderizarQuestaoQuiz();
 }
 
 function renderizarQuestaoQuiz() {
     const listaQuestoes = databaseQuestoes[nivelQuizAtual];
-    if (!listaQuestoes) return;
     const dadosQuestao = listaQuestoes[indiceQuestaoAtual];
-    if (!dadosQuestao) return;
 
     const totalQ = listaQuestoes.length;
     const porcentagem = ((indiceQuestaoAtual + 1) / totalQ) * 100;
-    
-    const txtProgress = document.getElementById('quiz-txt-progress');
-    const barFill = document.getElementById('quiz-bar-fill');
-    const qTitle = document.getElementById('quiz-question-title');
+    document.getElementById('quiz-txt-progress').innerText = `Questão ${indiceQuestaoAtual + 1} de ${totalQ}`;
+    document.getElementById('quiz-bar-fill').style.width = `${porcentagem}%`;
+    document.getElementById('quiz-question-title').innerText = dadosQuestao.q;
+
     const caixaOpcoes = document.getElementById('quiz-options-box');
+    caixaOpcoes.innerHTML = "";
 
-    if (txtProgress) txtProgress.innerText = `Questão ${indiceQuestaoAtual + 1} de ${totalQ}`;
-    if (barFill) barFill.style.width = `${porcentagem}%`;
-    if (qTitle) qTitle.innerText = dadosQuestao.q;
+    dadosQuestao.o.forEach((opcao, indice) => {
+        const btn = document.createElement('button');
+        btn.innerText = opcao;
+        btn.className = "quiz-option-btn"; 
+        
+        btn.addEventListener('click', () => checarRespostaQuiz(indice, btn));
+        caixaOpcoes.appendChild(btn);
+    });
 
-    if (caixaOpcoes) {
-        caixaOpcoes.innerHTML = "";
-        dadosQuestao.o.forEach((opcao, indice) => {
-            const btn = document.createElement('button');
-            btn.innerText = opcao;
-            btn.className = "quiz-option-btn"; 
-            btn.addEventListener('click', () => checarRespostaQuiz(indice, btn));
-            caixaOpcoes.appendChild(btn);
-        });
-    }
-
-    const btnNext = document.getElementById('btn-next-question');
-    if (btnNext) btnNext.disabled = true;
+    document.getElementById('btn-next-question').disabled = true;
 }
 
 function checarRespostaQuiz(indiceSelecionado, elementoClicado) {
     const listaQuestoes = databaseQuestoes[nivelQuizAtual];
     const respostaCorreta = listaQuestoes[indiceQuestaoAtual].a;
-    const caixaOpcoes = document.getElementById('quiz-options-box');
-    if(!caixaOpcoes) return;
-    const todosBotoes = caixaOpcoes.querySelectorAll('button');
+    const todosBotoes = document.getElementById('quiz-options-box').querySelectorAll('button');
 
     todosBotoes.forEach(b => b.disabled = true);
 
@@ -347,17 +278,14 @@ function checarRespostaQuiz(indiceSelecionado, elementoClicado) {
         elementoClicado.style.background = "#ffebee";
         elementoClicado.style.borderColor = "#c62828";
         elementoClicado.style.color = "#c62828";
-        if(todosBotoes[respostaCorreta]) {
-            todosBotoes[respostaCorreta].style.background = "#e8f5e9";
-            todosBotoes[respostaCorreta].style.borderColor = "#2e7d32";
-        }
+        todosBotoes[respostaCorreta].style.background = "#e8f5e9";
+        todosBotoes[respostaCorreta].style.borderColor = "#2e7d32";
     }
 
     const metricEl = document.getElementById('metric-quiz');
     if(metricEl) metricEl.innerText = `${totalAcertosQuiz}/30 (Parcial)`;
     
-    const btnNext = document.getElementById('btn-next-question');
-    if (btnNext) btnNext.disabled = false;
+    document.getElementById('btn-next-question').disabled = false;
 }
 
 function proximaQuestao() {
@@ -406,18 +334,14 @@ function finalizarNivelQuiz() {
         </div>
     `;
     
-    const injector = document.getElementById('modal-content-injector');
-    const overlay = document.getElementById('global-modal-overlay');
-    if(injector && overlay) {
-        injector.innerHTML = modalHtml;
-        overlay.classList.remove('hidden');
+    document.getElementById('modal-content-injector').innerHTML = modalHtml;
+    document.getElementById('global-modal-overlay').classList.remove('hidden');
 
-        document.getElementById('btn-avancar-nivel').addEventListener('click', () => {
-            mudarNivelQuiz(proxNivel);
-            ocultarModal();
-        });
-        document.getElementById('btn-ficar-nivel').addEventListener('click', ocultarModal);
-    }
+    document.getElementById('btn-avancar-nivel').addEventListener('click', () => {
+        mudarNivelQuiz(proxNivel);
+        ocultarModal();
+    });
+    document.getElementById('btn-ficar-nivel').addEventListener('click', ocultarModal);
 }
 
 function mostrarReprovacao(porcentagem) {
@@ -432,18 +356,14 @@ function mostrarReprovacao(porcentagem) {
             </div>
         </div>
     `;
-    const injector = document.getElementById('modal-content-injector');
-    const overlay = document.getElementById('global-modal-overlay');
-    if(injector && overlay) {
-        injector.innerHTML = modalHtml;
-        overlay.classList.remove('hidden');
+    document.getElementById('modal-content-injector').innerHTML = modalHtml;
+    document.getElementById('global-modal-overlay').classList.remove('hidden');
 
-        document.getElementById('btn-reiniciar-quiz').addEventListener('click', () => {
-            mudarNivelQuiz('facil');
-            ocultarModal();
-        });
-        document.getElementById('btn-fechar-aviso').addEventListener('click', ocultarModal);
-    }
+    document.getElementById('btn-reiniciar-quiz').addEventListener('click', () => {
+        mudarNivelQuiz('facil');
+        ocultarModal();
+    });
+    document.getElementById('btn-fechar-aviso').addEventListener('click', ocultarModal);
 }
 
 function gerarCertificado() {
@@ -467,123 +387,68 @@ function gerarCertificado() {
         </div>
     `;
     
-    const injector = document.getElementById('modal-content-injector');
-    const overlay = document.getElementById('global-modal-overlay');
-    if(injector && overlay) {
-        injector.innerHTML = modalHtml;
-        overlay.classList.remove('hidden');
-        
-        document.getElementById('btn-fechar-certificado').addEventListener('click', ocultarModal);
-        document.getElementById('btn-download-certificado').addEventListener('click', executarDownloadRealCertificado);
-    }
+    document.getElementById('modal-content-injector').innerHTML = modalHtml;
+    document.getElementById('global-modal-overlay').classList.remove('hidden');
+    
+    document.getElementById('btn-fechar-certificado').addEventListener('click', ocultarModal);
+    document.getElementById('btn-download-certificado').addEventListener('click', executarDownloadRealCertificado);
 }
 
 function executarDownloadRealCertificado() {
     const porcentagem = ((totalAcertosQuiz / 30) * 100).toFixed(0);
-    const htmlConteudo = `<!DOCTYPE html>
+    const htmlConteudo = `
+    <!DOCTYPE html>
     <html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
-        <title>Certificado Raízes do Amanhã</title>
         <style>
-            @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Plus+Jakarta+Sans:wght@400;700&display=swap');
-            body { 
-                margin: 0; 
-                padding: 30px; 
-                background: #f4f6f4; 
-                display: flex; 
-                justify-content: center; 
-                align-items: center; 
-                min-height: 95vh;
-                font-family: 'Plus Jakarta Sans', sans-serif;
+            @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Plus+Jakarta+Sans:wght@400;700&display=swap');
+            body { margin: 0; padding: 20px; background: #f0f0f0; display: flex; justify-content: center; }
+            .cert-container { 
+                width: 900px; height: 630px; background: #f9f7f2; 
+                border: 20px solid #2d5a27; border-image: linear-gradient(135deg, #2d5a27, #b8860b) 30;
+                position: relative; padding: 40px; box-sizing: border-box; text-align: center;
+                box-shadow: 0 0 20px rgba(0,0,0,0.2);
             }
-            .border-cert { 
-                width: 900px; 
-                height: 600px; 
-                background: #fbfbf7; 
-                border: 15px double #2d5a27;
-                outline: 2px solid #aa8730;
-                outline-offset: -8px;
-                position: relative; 
-                padding: 40px 60px; 
-                box-sizing: border-box; 
-                text-align: center;
-                box-shadow: 0 12px 25px rgba(0,0,0,0.1);
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
+            .faixa-ouro { 
+                background: linear-gradient(to bottom, #d4af37, #aa8730);
+                color: white; padding: 15px 40px; margin: 0 auto 30px;
+                display: inline-block; clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+                font-family: 'Cinzel', serif; font-size: 24px; text-transform: uppercase;
             }
-            .border-cert::before {
-                content: "🌱";
-                font-size: 38px;
-                margin-bottom: 10px;
-            }
-            h1 { 
-                font-family: 'Cinzel', serif; 
-                color: #1a3c17; 
-                font-size: 30px; 
-                margin: 0 0 8px 0;
-                font-weight: 800;
-                letter-spacing: 1px;
-            }
-            h2 { 
-                font-family: 'Cinzel', serif; 
-                color: #aa8730; 
-                font-size: 19px; 
-                margin: 0 0 30px 0;
-                font-weight: 600;
-                letter-spacing: 1.5px;
-            }
-            p { 
-                color: #333; 
-                line-height: 1.8; 
-                font-size: 16px; 
-                margin: 12px 0;
-                max-width: 740px;
-            }
-            .destaque { 
-                font-weight: 700; 
-                color: #1a3c17; 
-                border-bottom: 1px dotted #aa8730;
-            }
-            .data-linha {
-                margin-top: 25px !important;
-                font-style: italic;
-                color: #555;
-            }
-            .footer-cert { 
-                margin-top: 45px;
-                font-family: 'Cinzel', serif;
-                font-size: 11px; 
-                letter-spacing: 1px; 
-                color: #666;
-                text-transform: uppercase;
-                border-top: 1px solid #e0d9c5;
-                padding-top: 12px;
-                width: 80%;
-                font-weight: 700;
-            }
+            h1 { font-family: 'Cinzel', serif; color: #1a3c17; font-size: 32px; margin-bottom: 20px; }
+            p { font-family: 'Plus Jakarta Sans', sans-serif; color: #333; line-height: 1.6; font-size: 16px; margin: 15px 0; }
+            .assinaturas { display: flex; justify-content: space-between; margin-top: 80px; }
+            .assinatura-box { border-top: 1px solid #333; width: 250px; padding-top: 10px; font-family: 'Cinzel', serif; }
         </style>
     </head>
     <body>
-        <div class="border-cert">
+        <div class="cert-container">
+            <div class="faixa-ouro">PROJETO RAÍZES DO AMANHÃ</div>
+            <div style="font-size: 14px; margin-bottom: 20px;">Concepto de Monitoramento de Imparaviento agroecológica</div>
+            
             <h1>CERTIFICADO DE EXCELÊNCIA AGROECOLÓGICA</h1>
-            <h2>Projeto Integrado Raízes do Amanhã</h2>
-            <p>Certificamos para os devidos fins de direito e avaliação curricular que o <span class="destaque">ALUNO(A) ONLINE</span> concluiu com aproveitamento de excelência o ecossistema pedagógico digital de sustentabilidade, atingindo a marca avaliativa de <span class="destaque">${totalAcertosQuiz} acertos de 30 possíveis (${porcentagem}% de rendimento)</span> nas lições teóricas e computacionais.</p>
-            <p class="data-linha">Antônio Olinto - PR, 14 de Junho de 2026.</p>
-            <div class="footer-cert">
-                Plataforma de Monitoramento de Impacto Agroecológico & Inteligência Tecnológica Computacional
+            
+            <p>Pelo presente certificado, declaramos que o <strong>ALUNO(A) ONLINE</strong> concluiu com aproveitamento exemplar o ecossistema pedagógico digital de sustentabilidade, atingindo a marca avaliativa de <strong>\${totalAcertosQuiz} acertos de 30 possíveis (\${porcentagem}% de rendimento)</strong> nas lições teóricas e computacionais.</p>
+            
+            <p style="font-weight: bold; margin-top: 20px;">PLATAFORMA DE MONITORAMENTO DE IMPACTO AGROECOLÓGICO & INTELIGÊNCIA TECNOLÓGICA COMPUTACIONAL</p>
+            
+            <div class="assinaturas">
+                <div class="assinatura-box">
+                    Antônio Olinto<br><span style="font-size:12px;">Antônio Olinto, 14 de Junho de 2026</span>
+                </div>
+                <div class="assinatura-box">
+                    Daniel Muniz Niizer<br><span style="font-size:12px;">Daniel Muniz Niizer, 14 de Junho de 2026</span>
+                </div>
             </div>
         </div>
     </body>
     </html>`;
-
     const blob = new Blob([htmlConteudo], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'certificado_raizes_do_amanha.html';
+    link.download = 'Certificado_Raizes_do_Amanhã.html';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -600,8 +465,7 @@ function liberarCertificadoNoProgresso() {
             <p style="margin-bottom:15px;">Sua nota foi superior a 70% no Quiz Geral. Clique abaixo para realizar o download oficial:</p>
             <button id="btn-download-progresso" class="btn-primary">📥 Baixar Certificado</button>
         `;
-        const btnDown = document.getElementById('btn-download-progresso');
-        if(btnDown) btnDown.addEventListener('click', executarDownloadRealCertificado);
+        document.getElementById('btn-download-progresso').addEventListener('click', executarDownloadRealCertificado);
     }
 }
 
@@ -610,27 +474,23 @@ function abrirMidia(tipoMidia) {
     const box = document.getElementById('media-frame-box');
     const titulo = document.getElementById('media-viewport-title');
 
-    if(!container || !box) return;
-
     container.classList.remove('hidden');
     box.innerHTML = "";
 
     if (tipoMidia === 'pdf') {
-        if(titulo) titulo.innerHTML = "📄 Livro Técnico: Conservando os Solos (Manual do Acervo Digital da UFPR)";
+        titulo.innerHTML = "📄 Livro Técnico: Conservando os Solos (Manual do Acervo Digital da UFPR)";
         const urlPdf = "https://acervodigital.ufpr.br/xmlui/bitstream/handle/1884/85232/Conservando_os_solos.pdf?sequence=1&isAllowed=y";
         box.innerHTML = `<iframe src="https://docs.google.com/gview?url=${encodeURIComponent(urlPdf)}&embedded=true" style="width:100%; height:100%; border:none;"></iframe>`;
     } else if (tipoMidia === 'video') {
-        if(titulo) titulo.innerHTML = "🎥 Videoaula Prática: Preservação de Nascentes Rurais";
+        titulo.innerHTML = "🎥 Videoaula Prática: Preservação de Nascentes Rurais";
         box.innerHTML = `<iframe src="https://www.youtube.com/embed/FHraCDyIhrI" style="width:100%; height:100%; border:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     }
     container.scrollIntoView({ behavior: 'smooth' });
 }
 
 function fecharMidia() {
-    const container = document.getElementById('media-viewport-container');
-    const box = document.getElementById('media-frame-box');
-    if(container) container.classList.add('hidden');
-    if(box) box.innerHTML = "";
+    document.getElementById('media-viewport-container').classList.add('hidden');
+    document.getElementById('media-frame-box').innerHTML = "";
 }
 
 function mostrarReferencias() {
@@ -642,20 +502,16 @@ function mostrarReferencias() {
                 <li><strong>Sistema FAEP/SENAR-PR:</strong> Diretrizes e manuais pedagógicos do Programa Agrinho 2026.</li>
                 <li><strong>EMBRAPA:</strong> Acervo científico sobre o Sistema de Plantio Direto (SPD) e Manejo Integrado de Pragas (MIP).</li>
                 <li><strong>UFPR:</strong> Acervo Digital - Livro Técnico "Conservando os Solos".</li>
-                <li><strong>IBGE:</strong> Censo Agropecuário e indicadores de sustentabilidade na agricultura familiar.</li>
+                <li><strong>IBGE:</strong> Censo Agropecuário e indicators de sustentabilidade na agricultura familiar.</li>
             </ul>
             <div class="btn-gap">
                 <button id="btn-fechar-ref" class="btn-secondary">Fechar</button>
             </div>
         </div>
     `;
-    const injector = document.getElementById('modal-content-injector');
-    const overlay = document.getElementById('global-modal-overlay');
-    if(injector && overlay) {
-        injector.innerHTML = modalHtml;
-        overlay.classList.remove('hidden');
-        document.getElementById('btn-fechar-ref').addEventListener('click', ocultarModal);
-    }
+    document.getElementById('modal-content-injector').innerHTML = modalHtml;
+    document.getElementById('global-modal-overlay').classList.remove('hidden');
+    document.getElementById('btn-fechar-ref').addEventListener('click', ocultarModal);
 }
 
 const cartasMemoriaOriginais = [
@@ -693,25 +549,20 @@ function iniciarTimerJogo() {
         segundosJogo++;
         const mins = String(Math.floor(segundosJogo / 60)).padStart(2, '0');
         const secs = String(segundosJogo % 60).padStart(2, '0');
-        const timerVal = document.getElementById('timer-val');
-        if(timerVal) timerVal.innerText = `${mins}:${secs}`;
+        document.getElementById('timer-val').innerText = `${mins}:${secs}`;
     }, 1000);
 }
 
 function inicializarJogo() {
     clearInterval(timerIdInterv);
-    const timerVal = document.getElementById('timer-val');
-    const movesVal = document.getElementById('moves-val');
-    if(timerVal) timerVal.innerText = "00:00";
-    if(movesVal) movesVal.innerText = "0";
-    
+    document.getElementById('timer-val').innerText = "00:00";
+    document.getElementById('moves-val').innerText = "0";
     jogadasEfetuadas = 0;
     jogoIniciado = false;
     vetorTemporarioCartas = [];
 
     const cartasEmbaralhadas = embaralharFisherYates([...cartasMemoriaOriginais]);
     const canvas = document.getElementById('canvas-tabuleiro-memoria');
-    if(!canvas) return;
     canvas.innerHTML = "";
 
     cartasEmbaralhadas.forEach(item => {
@@ -744,8 +595,7 @@ function virarCartaTabuleiro(elementoCarta, objetoDado) {
 
     if (vetorTemporarioCartas.length === 2) {
         jogadasEfetuadas++;
-        const movesVal = document.getElementById('moves-val');
-        if(movesVal) movesVal.innerText = jogadasEfetuadas;
+        document.getElementById('moves-val').innerText = jogadasEfetuadas;
 
         if (vetorTemporarioCartas[0].d.nome === vetorTemporarioCartas[1].d.nome) {
             vetorTemporarioCartas[0].el.classList.add('matched');
