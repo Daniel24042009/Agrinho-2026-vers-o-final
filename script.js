@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById('simulador-form').addEventListener('submit', (e) => e.preventDefault());
     ['solo', 'agua', 'insumos', 'biodiversidade'].forEach(id => {
-        document.getElementById(id).addEventListener('change', executarDiagnostico);
+        document.getElementById(id).addEventListener('change', executingDiagnostico);
     });
 
     document.querySelectorAll('.agro-card-extended').forEach(card => {
@@ -26,10 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById('btn-reiniciar-jogo').addEventListener('click', inicializarJogo);
     
-    // O evento de fechar overlay clicando fora
     document.getElementById('global-modal-overlay').addEventListener('click', fecharModalPorCliqueFora);
 
-    executarDiagnostico();
+    executingDiagnostico();
     setTimeout(() => { if(document.getElementById('quiz-question-title')) renderizarQuestaoQuiz(); }, 500);
 });
 
@@ -43,12 +42,13 @@ function irParaAba(nomeAba) {
     if (viewPane) viewPane.classList.add('active');
     if (navBtn) navBtn.classList.add('active');
 
+    // AJUSTADO OS TÍTULOS PARA EXIBIR APENAS "JOGO DA MEMÓRIA" NO SINGULAR
     const bibliotecaTitulos = {
         painel: ["Monitoramento de Impacto Agroecológico", "Tecnologia aplicada ao desenvolvimento sustentável da Escola do Campo rural."],
         agroecologia: ["Espaço de Capacitação Científica", "Visão detalhada e aprofundada das seis grandes diretrizes conservacionistas."],
         licoes: ["Quiz e Avaliação Continuada", "Fixação teórica através de blocos de múltipla escolha integrados."],
         materiais: ["Central de Recursos Didáticos", "Visualização integrada de acervos científicos públicos sem links externos."],
-        desafios: ["Módulos de Gamificação Prática", "Lógica de computação e pareamento para memorização biológica ativa."],
+        desafios: ["Jogo da Memória Computacional", "Lógica de computação e pareamento para memorização biológica ativa."],
         progresso: ["Painel de Métricas e Resultados", "Análise de evolução conceitual obtida nos simuladores computadorizados."]
     };
 
@@ -60,7 +60,7 @@ function irParaAba(nomeAba) {
     if (nomeAba === 'desafios') inicializarJogo();
 }
 
-function executarDiagnostico() {
+function executingDiagnostico() {
     const solo = document.getElementById('solo').value;
     const agua = document.getElementById('agua').value;
     const insumos = document.getElementById('insumos').value;
@@ -104,13 +104,44 @@ function executarDiagnostico() {
     }
 }
 
+// CONTEÚDO AMPLIADO PROFUNDAMENTE COM BASE EM DIRETRIZES TÉCNICAS DA EMBRAPA
 const dadosEmbrapaPopups = {
-    rotacao: { titulo: "🔄 Rotação de Culturas", intro: "Prática baseada no plantio alternado...", beneficios: ["Interrompe o ciclo biológico de pragas.", "Melhora a macroestrutura física do solo."], exemplo: "1º Ano: Milho → 2º Ano: Soja → 3º Ano: Cobertura." },
-    adubacao: { titulo: "🌱 Adubação Verde", intro: "Plantas cultivadas para simbiose e fixação de N2...", beneficios: ["Fixação biológica de Nitrogênio.", "Proteção contra o impacto da chuva."], exemplo: "Semeadura direta de Crotalária." },
-    mip: { titulo: "🐞 MIP (Manejo Integrado)", intro: "Conjunto ecológico de tomada de decisões...", beneficios: ["Redução drástica no custo de defensivos.", "Preservação de predadores benéficos."], exemplo: "Uso de armadilhas biológicas." },
-    safs: { titulo: "🌳 Sistemas Agroflorestais", intro: "Mimetiza a dinâmica biológica de uma floresta...", beneficios: ["Ciclagem profunda de nutrientes.", "Múltiplas fontes de renda na mesma área."], exemplo: "Consórcio de árvores nativas com café." },
-    nascentes: { titulo: "💧 Proteção de Nascentes", intro: "Blindagem mecânica e reflorestamento de olhos d'água...", beneficios: ["Garantia de vazão e pureza.", "Evita o assoreamento de córregos."], exemplo: "Cercamento rígido e plantio de mudas." },
-    curvas: { titulo: "🚜 Curvas de Nível", intro: "Engenharia rústica para quebrar a força das enxurradas...", beneficios: ["Força a infiltração da água.", "Elimina a formação de voçorocas."], exemplo: "Construção de terraços de retenção." }
+    rotacao: { 
+        titulo: "🔄 Rotação e Diversificação Complexa de Culturas", 
+        intro: "A rotação de culturas consiste em alternar de forma planejada, sistemática e ordenada diferentes espécies vegetais em uma mesma área agrícola ao longo do tempo. Esta técnica rompe radicalmente a continuidade de hospedeiros, agindo como um controle preventivo essencial contra a proliferação de pragas, fungos fitopatogênicos e nematoides específicos do solo. Além disso, o consórcio de plantas com arquiteturas de raízes variadas (superficiais combinadas com pivotantes profundas) promove a descompactação mecânica natural do solo, melhora a porosidade e potencializa a infiltração de água e a ciclagem profunda de nutrientes preciosos.", 
+        beneficios: ["Interrompe eficientemente o ciclo biológico de pragas rurais e patógenos.", "Promove a descompactação biológica natural através de múltiplos sistemas radiculares.", "Maximiza a atividade biológica e a diversidade da microbiota benéfica do solo."], 
+        exemplo: "Planejamento estruturado: 1º Ano: Milho (Gramínea) → 2º Ano: Soja (Leguminosa) → 3º Ano: Nabo Forrageiro / Aveia Preta (Cobertura profunda)." 
+    },
+    adubacao: { 
+        titulo: "🌱 Adubação Verde e Cobertura Viva de Solo", 
+        intro: "Esta prática milenar baseia-se no cultivo planejado de plantas de rápido crescimento (principalmente leguminosas, crucíferas e gramíneas) com o objetivo exclusivo de enriquecer, proteger e reestruturar o solo. As espécies selecionadas possuem uma capacidade simbiótica incrível com bactérias fixadoras, capturando o nitrogênio gasoso livre na atmosfera e injetando-o diretamente na terra. Ao formar uma camada vegetal densa sobre a superfície, a adubação verde blinda a estrutura do solo contra a erosão hídrica severa, amortece oscilações extremas de temperatura e suprime o desenvolvimento de plantas daninhas por competição por luz.", 
+        beneficios: ["Fixação biológica de Nitrogênio atmosférico de forma gratuita.", "Aporte maciço de matéria orgânica estável de altíssima qualidade.", "Eliminação do impacto erosivo das chuvas torrenciais na superfície."], 
+        exemplo: "Cultivo intercalado ou em safrinha de Crotalária ou Mucuna Preta, seguido de roçagem para a formação de uma camada uniforme de palhada protetora." 
+    },
+    mip: { 
+        titulo: "🐞 Manejo Integrado de Pragas (MIP-Agroecologia)", 
+        intro: "O MIP é uma filosofia moderna e ecológica de tomada de decisões que gerencia as populações de pragas de modo a evitar que causem prejuízos econômicos, sem agredir o ecossistema. Em vez de pulverizações calendarizadas de veneno químico, o produtor realiza amostragens de campo semanais. A intervenção só ocorre se a população atingir o rigoroso Nível de Dano Econômico. O sistema prioriza defensivos de matriz biológica (como vírus, bactérias e fungos controladores) e incentiva a manutenção ativa de insetos predadores benéficos, restaurando a autorregulação natural da lavoura.", 
+        beneficios: ["Redução drástica no custo de insumos e dependência química industrial.", "Preservação integral de polinizadores e predadores naturais (joaninhas, tesourinhas).", "Mitigação completa de riscos de contaminação e toxicidade alimentar."], 
+        exemplo: "Monitoramento ativo da Lagarta-do-cartucho com aplicação direcionada de extrato de Neem ou do bioinseticidas biológicos à base de Bacillus thuringiensis (Bt)." 
+    },
+    safs: { 
+        titulo: "🌳 Sistemas Agroflorestais Planejados (SAFs)", 
+        intro: "Os SAFs representam a vanguarda da sustentabilidade ao combinar intencionalmente árvores perenes (madeireiras, frutíferas ou nativas) com cultivos agrícolas anuais e/ou criação de animais em um arranjo espacial e temporal harmônico. Esse design inteligente imita com perfeição a complexidade estrutural, a sucessão biológica e a estabilidade de uma floresta nativa. As raízes profundas das árvores realizam um bombeamento hidráulico e reciclagem de nutrientes de camadas profundas para a superfície. Além do ganho ambiental por sequestro de carbono e abrigo da fauna, garante resiliência econômica ao diversificar a produção anual da propriedade.", 
+        beneficios: ["Reciclagem altamente eficiente de nutrientes profundos e proteção hídrica.", "Conforto térmico animal severo e diversificação de fontes de renda na mesma área.", "Sequestro ativo de Carbono atmosférico mitigando gases estufa."], 
+        exemplo: "Consorciação agroflorestal: Fileiras de Eucalipto ou Erva-Mate intercaladas com cultivo de Milho, Feijão e pastagens sombreadas para pecuária leiteira." 
+    },
+    nascentes: { 
+        titulo: "💧 Recuperação, Cercamento e Proteção de Nascentes", 
+        intro: "A salvaguarda de fontes d'água em Áreas de Preservação Permanente (APP) exige ações coordenadas estruturais e ecológicas. O passo primordial é o isolamento físico absoluto em um raio mínimo de 50 metros ao redor do olho d'água para barrar o pisoteio de bovinos, que causa compactação drástica e destruição marginal. Uma vez isolada a área, procede-se ao reflorestamento denso com mudas nativas da região. As copas reduzem a evaporação direta, enquanto as raízes funcionam como verdadeiras esponjas filtrantes, retendo defensivos agrícolas ou sedimentos das enxurradas e garantindo água limpa e contínua.", 
+        beneficios: ["Garantia de segurança hídrica contínua e vazão estável ao longo do ano.", "Filtragem biológica de resíduos e sedimentos suspensos.", "Retorno imediato da fauna endêmica e equilíbrio hidrológico."], 
+        exemplo: "Instalação de cercamento com arame liso rígido e plantio de espécies higrófitas nativas (como Ingá, Salgueiro e Taboa) ao redor de fontes degradadas." 
+    },
+    curvas: { 
+        titulo: "🚜 Engenharia de Curvas de Nível e Terraceamento", 
+        intro: "Técnicas mecânicas fundamentais de conservação de solo recomendadas para relevos ondulados e encostas. O plantio em curvas de nível consiste em realizar todas as operações de preparo e semeadura seguindo linhas imaginárias perpendiculares ao declive (em nível altimétrico constante). O terraceamento adiciona barreiras físicas de terra (terraços) espaçados. Esse sistema cria obstáculos físicos severos que reduzem drasticamente a velocidade de escoamento das águas das enxurradas, transformando energia cinética destruidora em infiltração lenta e controlada, eliminando o surgimento de voçorocas.", 
+        beneficios: ["Retenção quase total da camada de solo fértil superficial.", "Favorecimento massivo da recarga do lençol freático local por infiltração.", "Prevenção definitiva do assoreamento e contaminação de rios vizinhos."], 
+        exemplo: "Uso do aparelho 'Pé-de-Galinha' ou nível de mangueira para demarcação exata das linhas de nível no terreno antes de abrir sulcos de plantio." 
+    }
 };
 
 function mostrarModal(idAlvo) {
@@ -124,15 +155,15 @@ function mostrarModal(idAlvo) {
         <div class="modal-box-body">
             <button id="btn-fechar-modal-generico" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>
             <h2 style="color:var(--primary-green); font-weight:800; border-bottom:1px solid var(--border-gray); padding-bottom:12px; margin-bottom:16px;">${item.titulo}</h2>
-            <div style="background:#f4f7f5; padding:14px; border-radius:8px; font-size:0.9rem; line-height:1.5; margin-bottom:16px;">${item.intro}</div>
-            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:20px;">
+            <div style="background:#f4f7f5; padding:18px; border-radius:8px; font-size:0.92rem; line-height:1.6; margin-bottom:16px; color:var(--text-dark); text-align:justify;">${item.intro}</div>
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:24px;">
                 <div>
-                    <h4 style="color:var(--primary-green); margin-bottom:8px;">Benefícios:</h4>
-                    <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:8px; font-size:0.85rem;">${bulletListHtml}</ul>
+                    <h4 style="color:var(--primary-green); margin-bottom:10px; font-weight:700;">🎯 Impactos e Benefícios Reais:</h4>
+                    <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:10px; font-size:0.88rem; line-height:1.4;">${bulletListHtml}</ul>
                 </div>
                 <div>
-                    <h4 style="color:var(--primary-green); margin-bottom:8px;">Exemplo Prático:</h4>
-                    <p style="font-size:0.85rem; line-height:1.4;">${item.exemplo}</p>
+                    <h4 style="color:var(--primary-green); margin-bottom:10px; font-weight:700;">🚜 Aplicação Técnica no Campo:</h4>
+                    <p style="font-size:0.88rem; line-height:1.5; background:#fff8e1; padding:12px; border-left:4px solid #ffb300; border-radius:4px; color:#5d4037;">${item.exemplo}</p>
                 </div>
             </div>
         </div>
@@ -185,7 +216,7 @@ const databaseQuestoes = {
         { q: "Qual a justificativa físico-química para a tríplice lavagem de embalagens?", o: ["Limpar o rótulo para facilitar a leitura", "Desprender mais de 99,9% dos resíduos químicos impregnados maximizando a descontaminação", "Alterar a composição molecular do plástico", "Permitir o reuso doméstico"], a: 1 },
         { q: "Na engenharia de solo, qual o princípio hidráulico das curvas de nível com terraços de retenção?", o: ["Acelerar o escoamento hídrico", "Infiltrar a água por redução da energia potencial gravitacional da enxurrada", "Evaporar o excesso de chuva", "Drenar a umidade para fora"], a: 1 },
         { q: "Qual a principal limitação ecológica no uso continuado de bioinseticidas à base de Bacillus thuringiensis (Bt)?", o: ["Eles volatilizam rapidamente abaixo de 10°C", "Seleção de populações de pragas resistentes caso manejados sem rotação de princípios ativos", "Intoxicação severa de polinizadores", "Incompatibilidade mecânica"], a: 1 },
-        { q: "A micorrização atua de qual forma nas raízes das culturas agrícolas?", o: ["Atacando tecidos celulares meristemáticos", "Expandindo a área de absorção hídrica e fosfática através de hifas fúngicas simbióticas", "Inibindo o crescimento de pelos absorventes", "Tornando as raízes impermeáveis"], a: 1 },
+        { q: "A micorrização atua de qual forma nas raíces das culturas agrícolas?", o: ["Atacando tecidos celulares meristemáticos", "Expandindo a área de absorção hídrica e fosfática através de hifas fúngicas simbióticas", "Inibindo o crescimento de pelos absorventes", "Tornando as raízes impermeáveis"], a: 1 },
         { q: "O processo de lixiviação consiste em qual fenômeno pedológico?", o: ["Acúmulo de palhada densa", "Lavagem e transporte de nutrientes solúveis rumo às camadas profundas pelo fluxo hídrico descendente", "Fixação estável de minerais", "Subida capilar de sais minerais"], a: 1 },
         { q: "Qual a meta estrutural final de uma transição agroecológica complexa de nível 3?", o: ["Trocar um insumo comercial industrial por outro biológico isolado", "Redesenhar o agroecossistema para funcionar autonomamente mimetizando processos naturais", "Mecanizar totalmente as áreas de preservação florestal", "Substituir a lavoura por pastagem intensiva"], a: 1 }
     ]
@@ -287,6 +318,7 @@ function finalizarNivelQuiz() {
         const porcentagemAcertos = (totalAcertosQuiz / 30) * 100;
         if (porcentagemAcertos >= 70) {
             gerarCertificado();
+            liberarCertificadoNoProgresso();
         } else {
             mostrarReprovacao(porcentagemAcertos);
         }
@@ -352,7 +384,7 @@ function gerarCertificado() {
             </p>
             <div class="btn-gap">
                 <button id="btn-fechar-certificado" class="btn-secondary">Fechar</button>
-                <button id="btn-download-certificado" class="btn-primary">📥 Baixar PDF</button>
+                <button id="btn-download-certificado" class="btn-primary">📥 Baixar Documento</button>
             </div>
         </div>
     `;
@@ -361,9 +393,65 @@ function gerarCertificado() {
     document.getElementById('global-modal-overlay').classList.remove('hidden');
     
     document.getElementById('btn-fechar-certificado').addEventListener('click', ocultarModal);
-    document.getElementById('btn-download-certificado').addEventListener('click', () => {
-        alert("Baixando PDF... Parabéns pela sua aprovação!");
-    });
+    document.getElementById('btn-download-certificado').addEventListener('click', executarDownloadRealCertificado);
+}
+
+// ATUALIZA CRIAÇÃO E DOWNLOAD REAL DO CERTIFICADO VIA BLOB HTML
+function executarDownloadRealCertificado() {
+    const porcentagem = ((totalAcertosQuiz / 30) * 100).toFixed(0);
+    const htmlConteudo = `
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <title>Certificado Oficial - Raízes do Amanhã</title>
+        <style>
+            body { font-family: 'Arial', sans-serif; background: #f4f7f5; padding: 40px; text-align: center; }
+            .border-cert { border: 10px double #0f271c; padding: 40px; background: white; max-width: 800px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+            h1 { color: #0f271c; font-size: 32px; text-transform: uppercase; margin-bottom: 5px; }
+            h2 { color: #97cc52; font-size: 20px; margin-top: 0; margin-bottom: 40px; }
+            p { font-size: 18px; color: #333; line-height: 1.8; margin: 20px 0; text-align: justify; }
+            .destaque { font-weight: bold; color: #0f271c; }
+            .footer-cert { margin-top: 60px; font-size: 14px; color: #777; border-top: 1px dashed #ccc; padding-top: 20px; }
+        </style>
+    </head>
+    <body>
+        <div class="border-cert">
+            <h1>CERTIFICADO DE EXCELÊNCIA AGROECOLÓGICA</h1>
+            <h2>Projeto Integrado Raízes do Amanhã</h2>
+            <p>Certificamos para os devidos fins de direito e avaliação curricular que o <span class="destaque">ALUNO(A) ONLINE</span> concluiu com aproveitamento de excelência o ecossistema pedagógico digital de sustentabilidade, atingindo a marca avaliativa de <span class="destaque">${totalAcertosQuiz} acertos de 30 possíveis (${porcentagem}% de rendimento)</span> nas lições teóricas e computacionais.</p>
+            <p>Antônio Olinto - PR, 14 de Junho de 2026.</p>
+            <div class="footer-cert">
+                Plataforma de Monitoramento de Impacto Agroecológico & Inteligência Tecnológica Computacional
+            </div>
+        </div>
+    </body>
+    </html>`;
+
+    const blob = new Blob([htmlConteudo], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'certificado_raizes_do_amanha.html';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
+// INJETA O BOTÃO DE DOWNLOAD DISPONÍVEL NA ABA "MEU PROGRESSO"
+function liberarCertificadoNoProgresso() {
+    const caixaCertificado = document.getElementById('status-certificado-box');
+    if(caixaCertificado) {
+        caixaCertificado.className = "certificado-status-liberado";
+        caixaCertificado.innerHTML = `
+            <div class="lock-icon">🏆</div>
+            <h4>Parabéns! Certificado Liberado</h4>
+            <p style="margin-bottom:15px;">Sua nota foi superior a 70% no Quiz Geral. Clique abaixo para realizar o download oficial:</p>
+            <button id="btn-download-progresso" class="btn-primary">📥 Baixar Certificado</button>
+        `;
+        document.getElementById('btn-download-progresso').addEventListener('click', executarDownloadRealCertificado);
+    }
 }
 
 function abrirMidia(tipoMidia) {
