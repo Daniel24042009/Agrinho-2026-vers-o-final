@@ -448,7 +448,6 @@ function executarDownloadRealCertificado() {
         </div>
     </body>
     </html>`;
-
     const blob = new Blob([htmlConteudo], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
