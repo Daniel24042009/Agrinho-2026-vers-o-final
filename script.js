@@ -1,35 +1,65 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Vincular alternância de abas com segurança
     const abas = ['painel', 'agroecologia', 'licoes', 'materiais', 'desafios', 'progresso'];
     abas.forEach(aba => {
         const btn = document.getElementById(`btn-tab-${aba}`);
         if(btn) btn.addEventListener('click', () => irParaAba(aba));
     });
 
-    document.getElementById('simulador-form').addEventListener('submit', (e) => e.preventDefault());
+    // Proteger o formulário do simulador
+    const simuladorForm = document.getElementById('simulador-form');
+    if (simuladorForm) {
+        simuladorForm.addEventListener('submit', (e) => e.preventDefault());
+    }
+
+    // Proteger os seletores do simulador de diagnóstico
     ['solo', 'agua', 'insumos', 'biodiversidade'].forEach(id => {
-        document.getElementById(id).addEventListener('change', executingDiagnostico);
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', executingDiagnostico);
     });
 
+    // Proteger os cards expandidos da Embrapa
     document.querySelectorAll('.agro-card-extended').forEach(card => {
         card.addEventListener('click', () => { mostrarModal(card.getAttribute('data-modal')); });
     });
 
-    document.getElementById('btn-quiz-facil').addEventListener('click', () => mudarNivelQuiz('facil'));
-    document.getElementById('btn-quiz-medio').addEventListener('click', () => mudarNivelQuiz('medio'));
-    document.getElementById('btn-quiz-dificil').addEventListener('click', () => mudarNivelQuiz('dificil'));
-    document.getElementById('btn-next-question').addEventListener('click', proximaQuestao);
-
-    document.getElementById('btn-midia-pdf').addEventListener('click', () => abrirMidia('pdf'));
-    document.getElementById('btn-midia-video').addEventListener('click', () => abrirMidia('video'));
-    document.getElementById('btn-fechar-midia').addEventListener('click', fecharMidia);
-    document.getElementById('btn-referencias').addEventListener('click', mostrarReferencias);
-
-    document.getElementById('btn-reiniciar-jogo').addEventListener('click', inicializarJogo);
+    // Proteger os botões do Quiz de Fixação
+    const btnFacil = document.getElementById('btn-quiz-facil');
+    if (btnFacil) btnFacil.addEventListener('click', () => mudarNivelQuiz('facil'));
     
-    document.getElementById('global-modal-overlay').addEventListener('click', fecharModalPorCliqueFora);
+    const btnMedio = document.getElementById('btn-quiz-medio');
+    if (btnMedio) btnMedio.addEventListener('click', () => mudarNivelQuiz('medio'));
+    
+    const btnDificil = document.getElementById('btn-quiz-dificil');
+    if (btnDificil) btnDificil.addEventListener('click', () => mudarNivelQuiz('dificil'));
+    
+    const btnNext = document.getElementById('btn-next-question');
+    if (btnNext) btnNext.addEventListener('click', proximaQuestao);
 
-    executingDiagnostico();
-    setTimeout(() => { if(document.getElementById('quiz-question-title')) renderizarQuestaoQuiz(); }, 500);
+    // Proteger os botões de mídias e referências
+    const btnPdf = document.getElementById('btn-midia-pdf');
+    if (btnPdf) btnPdf.addEventListener('click', () => abrirMidia('pdf'));
+    
+    const btnVideo = document.getElementById('btn-midia-video');
+    if (btnVideo) btnVideo.addEventListener('click', () => abrirMidia('video'));
+    
+    const btnFecharMidia = document.getElementById('btn-fechar-midia');
+    if (btnFecharMidia) btnFecharMidia.addEventListener('click', fecharMidia);
+    
+    const btnReferencias = document.getElementById('btn-referencias');
+    if (btnReferencias) btnReferencias.addEventListener('click', mostrarReferencias);
+
+    // Proteger o jogo da memória e overlay global
+    const btnReiniciarJogo = document.getElementById('btn-reiniciar-jogo');
+    if (btnReiniciarJogo) btnReiniciarJogo.addEventListener('click', inicializarJogo);
+    
+    const overlayModal = document.getElementById('global-modal-overlay');
+    if (overlayModal) overlayModal.addEventListener('click', fecharModalPorCliqueFora);
+
+    // INICIALIZAÇÃO AUTOMÁTICA SEGURA
+    irParaAba('painel'); // Força a ativação visual da primeira tela
+    executingDiagnostico(); // Calcula o simulador inicial
+    mudarNivelQuiz('facil'); // Monta a primeira pergunta do quiz automaticamente
 });
 
 function irParaAba(nomeAba) {
@@ -52,18 +82,28 @@ function irParaAba(nomeAba) {
     };
 
     if (bibliotecaTitulos[nomeAba]) {
-        document.getElementById('page-title').innerText = bibliotecaTitulos[nomeAba][0];
-        document.getElementById('page-subtitle').innerText = bibliotecaTitulos[nomeAba][1];
+        const titleEl = document.getElementById('page-title');
+        const subtitleEl = document.getElementById('page-subtitle');
+        if (titleEl) titleEl.innerText = bibliotecaTitulos[nomeAba][0];
+        if (subtitleEl) subtitleEl.innerText = bibliotecaTitulos[nomeAba][1];
     }
 
     if (nomeAba === 'desafios') inicializarJogo();
 }
 
 function executingDiagnostico() {
-    const solo = document.getElementById('solo').value;
-    const agua = document.getElementById('agua').value;
-    const insumos = document.getElementById('insumos').value;
-    const biodiversidade = document.getElementById('biodiversidade').value;
+    const soloEl = document.getElementById('solo');
+    const aguaEl = document.getElementById('agua');
+    const insumosEl = document.getElementById('insumos');
+    const biodiversidadeEl = document.getElementById('biodiversidade');
+
+    // Se os elementos seletores não existirem na tela, aborta para não quebrar o código
+    if (!soloEl || !aguaEl || !insumosEl || !biodiversidadeEl) return;
+
+    const solo = soloEl.value;
+    const agua = aguaEl.value;
+    const insumos = insumosEl.value;
+    const biodiversidade = biodiversidadeEl.value;
 
     let nota = 0;
     if (solo === 'excelente') nota += 25; else if (solo === 'alto') nota += 18; else if (solo === 'medio') nota += 10; else nota += 3;
@@ -71,35 +111,44 @@ function executingDiagnostico() {
     if (insumos === 'excelente') nota += 25; else if (insumos === 'alto') nota += 18; else if (insumos === 'medio') nota += 10; else nota += 3;
     if (biodiversidade === 'excelente') nota += 25; else if (biodiversidade === 'alto') nota += 18; else if (biodiversidade === 'medio') nota += 10; else nota += 3;
 
-    document.getElementById('points-valor').innerText = nota;
-    document.getElementById('metric-simulador').innerText = nota + "%";
+    const ptsVal = document.getElementById('points-valor');
+    const metricSim = document.getElementById('metric-simulador');
+    if (ptsVal) ptsVal.innerText = nota;
+    if (metricSim) metricSim.innerText = nota + "%";
 
-    document.getElementById('pct-cultivo').innerText = Math.round(nota * 0.9) + "%";
-    document.getElementById('bar-cultivo').style.width = Math.round(nota * 0.9) + "%";
-    document.getElementById('pct-ambiental').innerText = Math.round(nota * 1.0) + "%";
-    document.getElementById('bar-ambiental').style.width = Math.round(nota * 1.0) + "%";
-    document.getElementById('pct-gestao').innerText = Math.round(nota * 0.85) + "%";
-    document.getElementById('bar-gestao').style.width = Math.round(nota * 0.85) + "%";
+    const pctCultivo = document.getElementById('pct-cultivo');
+    const barCultivo = document.getElementById('bar-cultivo');
+    if (pctCultivo) pctCultivo.innerText = Math.round(nota * 0.9) + "%";
+    if (barCultivo) barCultivo.style.width = Math.round(nota * 0.9) + "%";
+
+    const pctAmbiental = document.getElementById('pct-ambiental');
+    const barAmbiental = document.getElementById('bar-ambiental');
+    if (pctAmbiental) pctAmbiental.innerText = Math.round(nota * 1.0) + "%";
+    if (barAmbiental) barAmbiental.style.width = Math.round(nota * 1.0) + "%";
+
+    const pctGestao = document.getElementById('pct-gestao');
+    const barGestao = document.getElementById('bar-gestao');
+    if (pctGestao) pctGestao.innerText = Math.round(nota * 0.85) + "%";
+    if (barGestao) barGestao.style.width = Math.round(nota * 0.85) + "%";
 
     const badge = document.getElementById('status-badge');
     const detalheBox = document.getElementById('resultado-diagnostico-detalhe');
-    detalheBox.classList.remove('hidden');
-
-    if (nota >= 80) {
-        badge.className = "pill-status state-active";
-        badge.innerText = "EXCELENTE";
-        detalheBox.className = "output-alert bom";
-        detalheBox.innerHTML = `<strong>✨ Índice Impecável: ${nota}%</strong><br>Propriedade modelo! Os manejos adotados conservam a macroestrutura rústica do solo.`;
-    } else if (nota >= 50) {
-        badge.className = "pill-status state-wait";
-        badge.innerText = "REGULAR";
-        detalheBox.className = "output-alert alerta";
-        detalheBox.innerHTML = `<strong>🌿 Índice Intermediário: ${nota}%</strong><br>Atenção às recomendações técnicas. É viável expandir o plantio direto.`;
-    } else {
-        badge.className = "pill-status state-wait";
-        badge.innerText = "ALERTA CRÍTICO";
-        detalheBox.className = "output-alert perigo";
-        detalheBox.innerHTML = `<strong>⚠️ Risco Severo Detectado: ${nota}%</strong><br>Alto índice de degradação estrutural e lixiviação.`;
+    
+    if (detalheBox) {
+        detalheBox.classList.remove('hidden');
+        if (nota >= 80) {
+            if(badge) { badge.className = "pill-status state-active"; badge.innerText = "EXCELENTE"; }
+            detalheBox.className = "output-alert bom";
+            detalheBox.innerHTML = `<strong>✨ Índice Impecável: ${nota}%</strong><br>Propriedade modelo! Os manejos adotados conservam a macroestrutura rústica do solo.`;
+        } else if (nota >= 50) {
+            if(badge) { badge.className = "pill-status state-wait"; badge.innerText = "REGULAR"; }
+            detalheBox.className = "output-alert alerta";
+            detalheBox.innerHTML = `<strong>🌿 Índice Intermediário: ${nota}%</strong><br>Atenção às recomendações técnicas. É viável expandir o plantio direto.`;
+        } else {
+            if(badge) { badge.className = "pill-status state-wait"; badge.innerText = "ALERTA CRÍTICO"; badge.style.background="#ffebee"; badge.style.color="#c62828"; }
+            detalheBox.className = "output-alert perigo";
+            detalheBox.innerHTML = `<strong>⚠️ Risco Severo Detectado: ${nota}%</strong><br>Alto índice de degradação estrutural e lixiviação.`;
+        }
     }
 }
 
@@ -120,7 +169,7 @@ const dadosEmbrapaPopups = {
         titulo: "🐞 Manejo Integrado de Pragas (MIP-Agroecologia)", 
         intro: "O MIP é uma filosofia moderna e ecológica de tomada de decisões...", 
         beneficios: ["Redução drástica no custo de insumos e dependência química industrial.", "Preservação integral de polinizadores e predadores naturais (joaninhas, tesourinhas).", "Mitigação completa de riscos de contaminação e toxicidade alimentar."], 
-        exemplo: "Monitoramento ativo da Lagarta-do-cartucho com aplicação direcionada de extrato de Neem ou do bioinseticidas biológicos à base de Bacillus thuringiensis (Bt)." 
+        exemplo: "Monitoramento active da Lagarta-do-cartucho com aplicação direcionada de extrato de Neem ou do bioinseticidas biológicos à base de Bacillus thuringiensis (Bt)." 
     },
     safs: { 
         titulo: "🌳 Sistemas Agroflorestais Planejados (SAFs)", 
@@ -167,14 +216,21 @@ function mostrarModal(idAlvo) {
         </div>
     `;
 
-    document.getElementById('modal-content-injector').innerHTML = layoutInjetado;
-    document.getElementById('global-modal-overlay').classList.remove('hidden');
-    document.getElementById('btn-fechar-modal-generico').addEventListener('click', ocultarModal);
+    const injector = document.getElementById('modal-content-injector');
+    const overlay = document.getElementById('global-modal-overlay');
+    if (injector && overlay) {
+        injector.innerHTML = layoutInjetado;
+        overlay.classList.remove('hidden');
+        const btnFechar = document.getElementById('btn-fechar-modal-generico');
+        if(btnFechar) btnFechar.addEventListener('click', ocultarModal);
+    }
 }
 
 function ocultarModal() {
-    document.getElementById('global-modal-overlay').classList.add('hidden');
-    document.getElementById('modal-content-injector').innerHTML = '';
+    const overlay = document.getElementById('global-modal-overlay');
+    const injector = document.getElementById('modal-content-injector');
+    if(overlay) overlay.classList.add('hidden');
+    if(injector) injector.innerHTML = '';
 }
 
 function fecharModalPorCliqueFora(e) {
@@ -198,7 +254,7 @@ const databaseQuestoes = {
         { q: "No plantio consorciado de milho e soja, qual a vantagem da soja?", o: ["Sombra excessiva", "Fornecimento biológico de nitrogênio", "Atrair lagartas", "Produzir sementes inférteis"], a: 1 },
         { q: "Qual a principal função do terraceamento em declives acentuados?", o: ["Facilitar o trânsito de pedestres", "Fracionar e reter o fluxo volumoso das enxurradas", "Aumentar a evaporação da água", "Estilizar a paisagem rústica"], a: 1 },
         { q: "O nível econômico de dano no MIP serve para determinar o quê?", o: ["O preço final do grão no mercado", "O momento exato em que a praga causa prejuízo real justificando intervenção", "O custo do combustível do trator", "A quantidade de adubo por hectare"], a: 1 },
-        { q: "Qual elemento é central na transição agroecológica?", o: ["Uso massivo de sementes transgênicas", "Redução gradual de insumos sintéticos industriais", "Abandono total da rotação de culturas", "Aumento do desmatamento legal"], a: 1 },
+        { q: "Qual element é central na transição agroecológica?", o: ["Uso massivo de sementes transgênicas", "Redução gradual de insumos sintéticos industriais", "Abandono total da rotação de culturas", "Aumento do desmatamento legal"], a: 1 },
         { q: "Que benefício os Corredores Ecológicos trazem às propriedades?", o: ["Isolamento completo dos animais", "Livre trânsito e fluxo gênico da fauna silvestre", "Facilidade para queimar os campos", "Aumento da erosão nas margens"], a: 1 },
         { q: "A 'cobertura morta' atua como barreira contra qual processo físico?", o: ["Compactação subterrânea pura", "Impacto direto das gotas de chuva evitando o selamento superficial", "Evaporação profunda", "Crescimento de raíces pivotantes"], a: 1 },
         { q: "Por que árvores nativas são mantidas em pastagens no modelo sustentável?", o: ["Para atrapalhar o maquinário", "Proporcionar conforto térmico ao gado e reciclar nutrientes", "Secar o solo ao redor", "Impedir o nascimento do capim"], a: 1 },
@@ -230,41 +286,54 @@ function mudarNivelQuiz(novoNivel) {
     
     if(novoNivel === 'facil') totalAcertosQuiz = 0;
 
-    document.getElementById('lbl-nivel-atual').innerText = novoNivel;
-    document.getElementById('btn-next-question').disabled = true;
+    const lblNivel = document.getElementById('lbl-nivel-atual');
+    if (lblNivel) lblNivel.innerText = novoNivel;
+
+    const btnNext = document.getElementById('btn-next-question');
+    if (btnNext) btnNext.disabled = true;
 
     renderizarQuestaoQuiz();
 }
 
 function renderizarQuestaoQuiz() {
     const listaQuestoes = databaseQuestoes[nivelQuizAtual];
+    if (!listaQuestoes) return;
     const dadosQuestao = listaQuestoes[indiceQuestaoAtual];
+    if (!dadosQuestao) return;
 
     const totalQ = listaQuestoes.length;
     const porcentagem = ((indiceQuestaoAtual + 1) / totalQ) * 100;
-    document.getElementById('quiz-txt-progress').innerText = `Questão ${indiceQuestaoAtual + 1} de ${totalQ}`;
-    document.getElementById('quiz-bar-fill').style.width = `${porcentagem}%`;
-    document.getElementById('quiz-question-title').innerText = dadosQuestao.q;
-
+    
+    const txtProgress = document.getElementById('quiz-txt-progress');
+    const barFill = document.getElementById('quiz-bar-fill');
+    const qTitle = document.getElementById('quiz-question-title');
     const caixaOpcoes = document.getElementById('quiz-options-box');
-    caixaOpcoes.innerHTML = "";
 
-    dadosQuestao.o.forEach((opcao, indice) => {
-        const btn = document.createElement('button');
-        btn.innerText = opcao;
-        btn.className = "quiz-option-btn"; 
-        
-        btn.addEventListener('click', () => checarRespostaQuiz(indice, btn));
-        caixaOpcoes.appendChild(btn);
-    });
+    if (txtProgress) txtProgress.innerText = `Questão ${indiceQuestaoAtual + 1} de ${totalQ}`;
+    if (barFill) barFill.style.width = `${porcentagem}%`;
+    if (qTitle) qTitle.innerText = dadosQuestao.q;
 
-    document.getElementById('btn-next-question').disabled = true;
+    if (caixaOpcoes) {
+        caixaOpcoes.innerHTML = "";
+        dadosQuestao.o.forEach((opcao, indice) => {
+            const btn = document.createElement('button');
+            btn.innerText = opcao;
+            btn.className = "quiz-option-btn"; 
+            btn.addEventListener('click', () => checarRespostaQuiz(indice, btn));
+            caixaOpcoes.appendChild(btn);
+        });
+    }
+
+    const btnNext = document.getElementById('btn-next-question');
+    if (btnNext) btnNext.disabled = true;
 }
 
 function checarRespostaQuiz(indiceSelecionado, elementoClicado) {
     const listaQuestoes = databaseQuestoes[nivelQuizAtual];
     const respostaCorreta = listaQuestoes[indiceQuestaoAtual].a;
-    const todosBotoes = document.getElementById('quiz-options-box').querySelectorAll('button');
+    const caixaOpcoes = document.getElementById('quiz-options-box');
+    if(!caixaOpcoes) return;
+    const todosBotoes = caixaOpcoes.querySelectorAll('button');
 
     todosBotoes.forEach(b => b.disabled = true);
 
@@ -278,14 +347,17 @@ function checarRespostaQuiz(indiceSelecionado, elementoClicado) {
         elementoClicado.style.background = "#ffebee";
         elementoClicado.style.borderColor = "#c62828";
         elementoClicado.style.color = "#c62828";
-        todosBotoes[respostaCorreta].style.background = "#e8f5e9";
-        todosBotoes[respostaCorreta].style.borderColor = "#2e7d32";
+        if(todosBotoes[respostaCorreta]) {
+            todosBotoes[respostaCorreta].style.background = "#e8f5e9";
+            todosBotoes[respostaCorreta].style.borderColor = "#2e7d32";
+        }
     }
 
     const metricEl = document.getElementById('metric-quiz');
     if(metricEl) metricEl.innerText = `${totalAcertosQuiz}/30 (Parcial)`;
     
-    document.getElementById('btn-next-question').disabled = false;
+    const btnNext = document.getElementById('btn-next-question');
+    if (btnNext) btnNext.disabled = false;
 }
 
 function proximaQuestao() {
@@ -334,14 +406,18 @@ function finalizarNivelQuiz() {
         </div>
     `;
     
-    document.getElementById('modal-content-injector').innerHTML = modalHtml;
-    document.getElementById('global-modal-overlay').classList.remove('hidden');
+    const injector = document.getElementById('modal-content-injector');
+    const overlay = document.getElementById('global-modal-overlay');
+    if(injector && overlay) {
+        injector.innerHTML = modalHtml;
+        overlay.classList.remove('hidden');
 
-    document.getElementById('btn-avancar-nivel').addEventListener('click', () => {
-        mudarNivelQuiz(proxNivel);
-        ocultarModal();
-    });
-    document.getElementById('btn-ficar-nivel').addEventListener('click', ocultarModal);
+        document.getElementById('btn-avancar-nivel').addEventListener('click', () => {
+            mudarNivelQuiz(proxNivel);
+            ocultarModal();
+        });
+        document.getElementById('btn-ficar-nivel').addEventListener('click', ocultarModal);
+    }
 }
 
 function mostrarReprovacao(porcentagem) {
@@ -356,14 +432,18 @@ function mostrarReprovacao(porcentagem) {
             </div>
         </div>
     `;
-    document.getElementById('modal-content-injector').innerHTML = modalHtml;
-    document.getElementById('global-modal-overlay').classList.remove('hidden');
+    const injector = document.getElementById('modal-content-injector');
+    const overlay = document.getElementById('global-modal-overlay');
+    if(injector && overlay) {
+        injector.innerHTML = modalHtml;
+        overlay.classList.remove('hidden');
 
-    document.getElementById('btn-reiniciar-quiz').addEventListener('click', () => {
-        mudarNivelQuiz('facil');
-        ocultarModal();
-    });
-    document.getElementById('btn-fechar-aviso').addEventListener('click', ocultarModal);
+        document.getElementById('btn-reiniciar-quiz').addEventListener('click', () => {
+            mudarNivelQuiz('facil');
+            ocultarModal();
+        });
+        document.getElementById('btn-fechar-aviso').addEventListener('click', ocultarModal);
+    }
 }
 
 function gerarCertificado() {
@@ -387,14 +467,17 @@ function gerarCertificado() {
         </div>
     `;
     
-    document.getElementById('modal-content-injector').innerHTML = modalHtml;
-    document.getElementById('global-modal-overlay').classList.remove('hidden');
-    
-    document.getElementById('btn-fechar-certificado').addEventListener('click', ocultarModal);
-    document.getElementById('btn-download-certificado').addEventListener('click', executarDownloadRealCertificado);
+    const injector = document.getElementById('modal-content-injector');
+    const overlay = document.getElementById('global-modal-overlay');
+    if(injector && overlay) {
+        injector.innerHTML = modalHtml;
+        overlay.classList.remove('hidden');
+        
+        document.getElementById('btn-fechar-certificado').addEventListener('click', ocultarModal);
+        document.getElementById('btn-download-certificado').addEventListener('click', executarDownloadRealCertificado);
+    }
 }
 
-// GERAÇÃO E DOWNLOAD REAL DO CERTIFICADO CONFORME O SEGUNDO MODELO SOLICITADO
 function executarDownloadRealCertificado() {
     const porcentagem = ((totalAcertosQuiz / 30) * 100).toFixed(0);
     const htmlConteudo = `<!DOCTYPE html>
@@ -517,7 +600,8 @@ function liberarCertificadoNoProgresso() {
             <p style="margin-bottom:15px;">Sua nota foi superior a 70% no Quiz Geral. Clique abaixo para realizar o download oficial:</p>
             <button id="btn-download-progresso" class="btn-primary">📥 Baixar Certificado</button>
         `;
-        document.getElementById('btn-download-progresso').addEventListener('click', executarDownloadRealCertificado);
+        const btnDown = document.getElementById('btn-download-progresso');
+        if(btnDown) btnDown.addEventListener('click', executarDownloadRealCertificado);
     }
 }
 
@@ -526,23 +610,27 @@ function abrirMidia(tipoMidia) {
     const box = document.getElementById('media-frame-box');
     const titulo = document.getElementById('media-viewport-title');
 
+    if(!container || !box) return;
+
     container.classList.remove('hidden');
     box.innerHTML = "";
 
     if (tipoMidia === 'pdf') {
-        titulo.innerHTML = "📄 Livro Técnico: Conservando os Solos (Manual do Acervo Digital da UFPR)";
+        if(titulo) titulo.innerHTML = "📄 Livro Técnico: Conservando os Solos (Manual do Acervo Digital da UFPR)";
         const urlPdf = "https://acervodigital.ufpr.br/xmlui/bitstream/handle/1884/85232/Conservando_os_solos.pdf?sequence=1&isAllowed=y";
         box.innerHTML = `<iframe src="https://docs.google.com/gview?url=${encodeURIComponent(urlPdf)}&embedded=true" style="width:100%; height:100%; border:none;"></iframe>`;
     } else if (tipoMidia === 'video') {
-        titulo.innerHTML = "🎥 Videoaula Prática: Preservação de Nascentes Rurais";
+        if(titulo) titulo.innerHTML = "🎥 Videoaula Prática: Preservação de Nascentes Rurais";
         box.innerHTML = `<iframe src="https://www.youtube.com/embed/FHraCDyIhrI" style="width:100%; height:100%; border:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     }
     container.scrollIntoView({ behavior: 'smooth' });
 }
 
 function fecharMidia() {
-    document.getElementById('media-viewport-container').classList.add('hidden');
-    document.getElementById('media-frame-box').innerHTML = "";
+    const container = document.getElementById('media-viewport-container');
+    const box = document.getElementById('media-frame-box');
+    if(container) container.classList.add('hidden');
+    if(box) box.innerHTML = "";
 }
 
 function mostrarReferencias() {
@@ -561,9 +649,13 @@ function mostrarReferencias() {
             </div>
         </div>
     `;
-    document.getElementById('modal-content-injector').innerHTML = modalHtml;
-    document.getElementById('global-modal-overlay').classList.remove('hidden');
-    document.getElementById('btn-fechar-ref').addEventListener('click', ocultarModal);
+    const injector = document.getElementById('modal-content-injector');
+    const overlay = document.getElementById('global-modal-overlay');
+    if(injector && overlay) {
+        injector.innerHTML = modalHtml;
+        overlay.classList.remove('hidden');
+        document.getElementById('btn-fechar-ref').addEventListener('click', ocultarModal);
+    }
 }
 
 const cartasMemoriaOriginais = [
@@ -601,20 +693,25 @@ function iniciarTimerJogo() {
         segundosJogo++;
         const mins = String(Math.floor(segundosJogo / 60)).padStart(2, '0');
         const secs = String(segundosJogo % 60).padStart(2, '0');
-        document.getElementById('timer-val').innerText = `${mins}:${secs}`;
+        const timerVal = document.getElementById('timer-val');
+        if(timerVal) timerVal.innerText = `${mins}:${secs}`;
     }, 1000);
 }
 
 function inicializarJogo() {
     clearInterval(timerIdInterv);
-    document.getElementById('timer-val').innerText = "00:00";
-    document.getElementById('moves-val').innerText = "0";
+    const timerVal = document.getElementById('timer-val');
+    const movesVal = document.getElementById('moves-val');
+    if(timerVal) timerVal.innerText = "00:00";
+    if(movesVal) movesVal.innerText = "0";
+    
     jogadasEfetuadas = 0;
     jogoIniciado = false;
     vetorTemporarioCartas = [];
 
     const cartasEmbaralhadas = embaralharFisherYates([...cartasMemoriaOriginais]);
     const canvas = document.getElementById('canvas-tabuleiro-memoria');
+    if(!canvas) return;
     canvas.innerHTML = "";
 
     cartasEmbaralhadas.forEach(item => {
@@ -647,7 +744,8 @@ function virarCartaTabuleiro(elementoCarta, objetoDado) {
 
     if (vetorTemporarioCartas.length === 2) {
         jogadasEfetuadas++;
-        document.getElementById('moves-val').innerText = jogadasEfetuadas;
+        const movesVal = document.getElementById('moves-val');
+        if(movesVal) movesVal.innerText = jogadasEfetuadas;
 
         if (vetorTemporarioCartas[0].d.nome === vetorTemporarioCartas[1].d.nome) {
             vetorTemporarioCartas[0].el.classList.add('matched');
